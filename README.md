@@ -1,4 +1,4 @@
-`#html` `#css` `#js` `#dom` `#JSON` `#HTTP` `#API` `#Bootstrap` `#master-in-software-engineering`
+`#html` `#css` `#js` `#dom` `#JSON` `#HTTP` `#API` `#Bootstrap` `#master-in-software-development`
 
 # Blog with API <!-- omit in toc -->
 
@@ -19,9 +19,9 @@
 ## Requirements
 
 - You must use semantic HTML5 elements for all the contents of the application
-- You have to use the jQuery library for the development of this pill
-- You must use jQuery Ajax to do the requests
-- You have to use Bootstrap Framework for the Layout and the styles. 
+- You must use JSON server library to create your own local repository
+- You must use fecth to do the requests
+- You have to use Bootstrap Framework for the Layout and the styles
 
 
 ## Repository
@@ -40,8 +40,6 @@ To create a fork on GitHub is as easy as clicking the “fork” button on the r
 
 \* JS
 
-\* jQuery
-
 \* Bootstrap
 
 \* HTTP Requests
@@ -58,8 +56,5 @@ To deliver this project you must follow the steps indicated in the document:
 
 ## Resources
 
-
-- [JSONPlaceholder](https://jsonplaceholder.typicode.com/)
-- [JSONPlaceholder Guide](https://jsonplaceholder.typicode.com/guide.html)
+- [JSON server](https://github.com/typicode/json-server)
 - [Official Bootstrap](https://getbootstrap.com/)
-- [Layout Overview](https://getbootstrap.com/docs/5.0/layout/)
