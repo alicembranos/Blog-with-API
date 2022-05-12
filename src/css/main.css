@@ -73,7 +73,6 @@ body {
 .post {
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 .post__img img {
   width: 100%;
