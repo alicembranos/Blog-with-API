@@ -9,10 +9,10 @@ window.onload = () => {
 };
 
 //!ADD INFINITY SCROLL
-postContainer.addEventListener('scroll',()=>{
-    if(postContainer.scrollTop + postContainer.clientHeight >= 
-        postContainer.scrollHeight){
-            getPosts();
+postContainer.addEventListener('scroll', () => {
+    if (postContainer.scrollTop + postContainer.clientHeight >=
+        postContainer.scrollHeight) {
+        getPosts();
     }
 })
 
@@ -36,7 +36,7 @@ async function addPosts(post) {
     let idPost = post.id;
     let imagePost = getImagesSplash(99);
     createHTMLpostSection(imagePost, titlePost, usernamePost, idPost);
-    createHTMLsliderSection(imagePost, titlePost);
+    createHTMLsliderSection(imagePost, titlePost, idPost);
 
     //Remove active class
     const divsCarousel = document.querySelectorAll('.carousel-item');
@@ -47,11 +47,14 @@ async function addPosts(post) {
 
 }
 
-async function createHTMLsliderSection(image, title) {
+async function createHTMLsliderSection(image, title, id) {
     const carouselContent = document.getElementById("carouselContent");
 
     const div = document.createElement("div");
     div.classList.add("carousel-item");
+    div.dataset.id = id;
+    div.addEventListener("click", showModal);
+
     const imgSlider = document.createElement("img");
     imgSlider.classList.add("d-block", "w-100");
     imgSlider.src = image;
@@ -122,6 +125,10 @@ async function getUsername(userId) {
 function showModal(e) {
     if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
         console.log(e.target);
+    } else if (e.target.id === "deleteBtn") {
+
+    } else if (e.target.id === "editBtn") {
+        
     }
 }
 
@@ -174,5 +181,7 @@ function getImagesSplash(index) {
 }
 
 function randomIndex(num) {
-    return Math.floor((Math.random() * num)+1);
+    return Math.floor((Math.random() * num) + 1);
 }
+
+//!EDIT POST
