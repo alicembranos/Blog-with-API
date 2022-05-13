@@ -16,11 +16,13 @@ const getPosts = () => {
 };
 //!ADD POSTS HTML
 async function addPosts(post) {
+  //Container reset
   postContainer.textContent = "";
-
   //Article
   const article = document.createElement("article");
   article.classList.add("post");
+  article.dataset.id = post.id;
+  article.addEventListener("click", showModal);
   //*Img container
   const sectionImg = document.createElement("section");
   sectionImg.classList.add("post__img");
@@ -32,6 +34,8 @@ async function addPosts(post) {
   //Delete and Edit buttons
   const deleteButton = document.createElement("button");
   const editButton = document.createElement("button");
+  deleteButton.id = "deleteBtn";
+  editButton.id = "editBtn";
   deleteButton.textContent = "Delete";
   editButton.textContent = "Edit";
   sectionImg.append(img, deleteButton, editButton);
@@ -62,4 +66,10 @@ async function getUsername(userId) {
   const response = await fetch(userURL);
   const user = await response.json();
   return user.username;
+}
+
+function showModal(e) {
+  if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
+    console.log(e.target);
+  }
 }
