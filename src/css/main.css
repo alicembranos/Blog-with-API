@@ -65,7 +65,7 @@ body {
 .blog__posts {
   flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   padding: 1rem;
   overflow-y: auto;
@@ -73,7 +73,8 @@ body {
 .post {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  cursor: pointer;
+  height: fit-content;
 }
 .post__img img {
   width: 100%;
