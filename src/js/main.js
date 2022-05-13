@@ -8,7 +8,7 @@ window.onload = () => {
     getPosts();
 };
 
-//!Add infinity scroll
+//!ADD INFINITY SCROLL
 postContainer.addEventListener('scroll',()=>{
     if(postContainer.scrollTop + postContainer.clientHeight >= 
         postContainer.scrollHeight){
@@ -31,11 +31,10 @@ const getPosts = () => {
 //!ADD POSTS HTML
 async function addPosts(post) {
 
-    let imagePost = await getImagesDog();
     let titlePost = post.title;
     let usernamePost = await getUsername(post.userId);
     let idPost = post.id;
-
+    let imagePost = getImagesSplash(99);
     createHTMLpostSection(imagePost, titlePost, usernamePost, idPost);
     createHTMLsliderSection(imagePost, titlePost);
 
@@ -49,7 +48,6 @@ async function addPosts(post) {
 }
 
 async function createHTMLsliderSection(image, title) {
-    console.log('entra');
     const carouselContent = document.getElementById("carouselContent");
 
     const div = document.createElement("div");
@@ -82,8 +80,6 @@ async function createHTMLpostSection(image, title, username, id) {
     const img = document.createElement("img");
     img.classList.add("post__image");
     img.src = image;
-    img.style.width = '100%';
-    img.style.height = '80%';
 
     //Delete and Edit buttons
     const deleteButton = document.createElement("button");
@@ -137,7 +133,8 @@ async function getImages(filter = '') {
 }
 
 async function fetchImages(url) {
-    const APIkey = "563492ad6f91700001000001bfb8fa2610e342dcbc6aaf2087ec52d0";
+    // const APIkey = "563492ad6f91700001000001bfb8fa2610e342dcbc6aaf2087ec52d0"; pexels
+    const APIkey = "gKosga8otH1P9B-t1lcm2ZyIiFUPmOE8A0XN7Akra5M";
     const response = await fetch(url, {
         method: 'GET',
         headers: {
@@ -169,21 +166,13 @@ function generateRandomImage(arrayImages) {
 
 }
 
-function randomIndex(array) {
-    return Math.floor(Math.random() * array.length);
+//!GET IMAGE FROM UNSPLASH SOURCE
+function getImagesSplash(index) {
+    const randomNumber = randomIndex(index);
+    const srcImages = `https://source.unsplash.com/16${randomNumber}x9${randomNumber}/`
+    return srcImages;
 }
 
-
-//!API DOGS FOR TESTING
-async function getImagesDog(filter = '') {
-    console.log('entra');
-    const urlImages = "https://dog.ceo/api/breeds/image/random";
-    const dataImages = await fetchImagesDog(urlImages);
-    return dataImages;
-}
-
-async function fetchImagesDog(url) {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.message;
+function randomIndex(num) {
+    return Math.floor((Math.random() * num)+1);
 }
