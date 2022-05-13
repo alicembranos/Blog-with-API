@@ -54,7 +54,7 @@ async function createHTMLsliderSection(image, title, id) {
     const div = document.createElement("div");
     div.classList.add("carousel-item");
     div.dataset.id = id;
-    div.addEventListener("click", showModal);
+    div.addEventListener("click", getDataModal);
 
     const imgSlider = document.createElement("img");
     imgSlider.classList.add("d-block", "w-100");
@@ -121,17 +121,6 @@ async function getUsername(userId) {
     const response = await fetch(userURL);
     const user = await response.json();
     return user.username;
-}
-
-function showModal(e) {
-    if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
-        console.log(e.target);
-        getDataModal(e);
-    } else if (e.target.id === "deleteBtn") {
-
-    } else if (e.target.id === "editBtn") {
-
-    }
 }
 
 //!GET IMAGES
@@ -280,6 +269,7 @@ async function addElementModalEdit(post) {
     //Create form 
     const formBody = document.createElement("form");
     formBody.classList.add("modal-edit__form");
+    formBody.dataset.id = post.id;
 
     //Create form content
     //Create label title
@@ -293,6 +283,7 @@ async function addElementModalEdit(post) {
     inputTitle.id = "titleInput";
     inputTitle.type = "text";
     inputTitle.value = post.title;
+    inputTitle.addEventListener('change', updateValue);
 
     labelTitle.append(inputTitle);
 
@@ -307,6 +298,7 @@ async function addElementModalEdit(post) {
     inputBody.id = "bodyInput";
     inputBody.type = "text";
     inputBody.value = post.body;
+    // inputBody.addEventListener('change', updateValue);
 
     labelBody.append(inputBody);
 
@@ -320,7 +312,6 @@ async function addElementModalEdit(post) {
     inputSave.id = "saveBtn";
     inputSave.type = "submit";
     inputSave.value = "Save";
-    formBody.addEventListener("click", await modifyPost(post, parentContainer, inputTitle.value, inputBody.value));
     labelSave.append(inputSave);
 
     //ADD TO FORM
@@ -328,36 +319,54 @@ async function addElementModalEdit(post) {
     //ADD FORM TO CONTAINER
     parentContainer.append(h2, formBody);
 
+    inputSave.addEventListener("click", modifyPost);
+
     parentContainer.parentElement.classList.toggle("container--hide");
 }
 
+//!UPDATE INPUT FIELDS
+function updateValue(e){
+    if (e.target.id = "titleInput") {
+        const title = document.getElementById("titleInput");
+        title.value = e.target.value;
+    } else if (e.target.id = "bodyInput") {
+        const body = document.getElementById("bodyInput");
+        body.value = e.target.value;
+        console.log('cambia2');
+    } 
+}
+
 //!MODIFY POST BY FETCH REQUEST
-async function modifyPost(post, element, titlePost, bodyPost) {
-    const urlPost = `http://localhost:3000/posts/${post.id}`;
+//!GET DATA FOR MODAL SPECIFIC POST
+async function modifyPost(e) {
+    e.preventDefault();
+    const clickPostID = e.target.parentElement.parentElement.dataset.id;
+    const urlPost = `http://localhost:3000/posts/${clickPostID}`;
+    const response = await fetch(urlPost);
+    const post = await response.json();
+    fetchToModifyPosts(urlPost, post);
+    
+}
 
-    const vuelta = await modify(urlPost, titlePost, bodyPost);
-    console.log(vuelta);
+async function fetchToModifyPosts(url, post) {
+    const titlePost = document.getElementById("titleInput").value;
+    const bodyPost = document.getElementById("bodyInput").value;
+    const responsePUT = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: post.userId,
+                title: titlePost,
+                body: bodyPost,
+                id: post.id
+            })
+        });
+    const result = await responsePUT.text();
+    console.log(result);
+    alert(result + 'modificado');
 
-
-    // fetch(urlPost, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify({
-    //             userId: post.userId,
-    //             title: titlePost,
-    //             body: bodyPost,
-    //         })
-    //     })
-    //     .then(res => res.text()) // or res.json()
-    //     .then(res => {
-    //         // alert(res + 'modificado')
-    //     })
-
-    // Reset
-    // reset();
-    // element.parentElement.classList.toggle("container--hide");
 }
 
 async function modify(urlPost, post, titlePost, bodyPost) {
