@@ -1,12 +1,13 @@
 const urlPosts = "http://localhost:3000/posts";
 const postContainer = document.getElementById("blogPosts");
-const controlRepeated = [];
+let controlRepeated = [];
 let indexPost = 0; //Last post load
 
 
 window.onload = () => {
     getPosts();
 };
+
 
 //!ADD INFINITY SCROLL
 postContainer.addEventListener('scroll', () => {
@@ -73,7 +74,7 @@ async function createHTMLpostSection(image, title, username, id) {
     const article = document.createElement("article");
     article.classList.add("post");
     article.dataset.id = id;
-    article.addEventListener("click", showModal);
+    article.addEventListener("click", getDataModal);
 
     //*Img container
     const sectionImg = document.createElement("section");
@@ -125,10 +126,11 @@ async function getUsername(userId) {
 function showModal(e) {
     if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
         console.log(e.target);
+        getDataModal(e);
     } else if (e.target.id === "deleteBtn") {
 
     } else if (e.target.id === "editBtn") {
-        
+
     }
 }
 
@@ -184,4 +186,201 @@ function randomIndex(num) {
     return Math.floor((Math.random() * num) + 1);
 }
 
-//!EDIT POST
+
+//!GET DATA FOR MODAL SPECIFIC POST
+function getDataModal(e) {
+    if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
+        const clickPostID = this.dataset.id;
+        fetchToServerPosts(clickPostID);
+    } else if (e.target.id === "editBtn") {
+        const clickPostID = e.target.parentElement.parentElement.dataset.id;
+        fetchToServerPosts(clickPostID, false);
+    } else if (e.target.id === "deleteBtn") {
+
+    }
+}
+
+async function fetchToServerPosts(id, info = true) {
+    const urlPost = `http://localhost:3000/posts/${id}`;
+    fetch(urlPost)
+        .then((response) => response.json())
+        .then((data) => {
+            if (info) {
+                addElementModal(data);
+            } else {
+                addElementModalEdit(data)
+            }
+        });
+}
+
+// !ADD ELEMENTS TO MODAL
+async function addElementModal(post) {
+    const parentContainer = document.getElementById("modalContent");
+    parentContainer.textContent = "";
+    //Close modal
+
+    //Create title
+    const h2 = document.createElement("h2");
+    h2.classList.add("modal__title");
+    h2.textContent = post.title;
+
+    //Create body
+    const body = document.createElement("p");
+    body.textContent = post.body;
+    body.classList.add("modal__body");
+
+    //Create div container user info
+    const divUser = document.createElement("div");
+    divUser.classList.add("modal__user-info");
+
+    //Create username
+    const user = await getUsername(post.userId);
+    const username = document.createElement("p");
+    username.classList.add("user-info__username");
+    username.textContent = user.username;
+    //Create email
+    const email = document.createElement("p");
+    email.classList.add("user-info__email");
+    email.textContent = user.email;
+    //getUsername function
+    //add to userinfo div the p
+    divUser.append(username, email);
+
+    //Create section comments
+    const sectionComments = document.createElement("section");
+    sectionComments.classList.add("modal__comments");
+    //create button show comments
+    const showCommentesBtn = document.createElement("button");
+    showCommentesBtn.classList.add("comments-container");
+    showCommentesBtn.textContent = "Show comments";
+    //Create comments container
+    const containerComments = document.createElement("section");
+    containerComments.classList.add("comments-container");
+    containerComments.classList.add("container--hide");
+    //add to section
+    sectionComments.append(showCommentesBtn, containerComments);
+
+    //ADD ALL TO CONTAINER
+    parentContainer.append(h2, body, divUser, sectionComments);
+
+    parentContainer.parentElement.classList.toggle("container--hide");
+}
+
+// !ADD ELEMENTS TO MODAL EDIT
+async function addElementModalEdit(post) {
+    const parentContainer = document.getElementById("modalContentEdit");
+    parentContainer.textContent = "";
+    //Close modal
+
+    //Create title
+    const h2 = document.createElement("h2");
+    h2.classList.add("modal__title");
+    h2.textContent = "Edit the post";
+
+    //Create form 
+    const formBody = document.createElement("form");
+    formBody.classList.add("modal-edit__form");
+
+    //Create form content
+    //Create label title
+    const labelTitle = document.createElement("label");
+    labelTitle.classList.add("modal-edit__label");
+    labelTitle.htmlFor = "titleInput";
+    labelTitle.textContent = "Title:";
+    //Create input title
+    const inputTitle = document.createElement("input");
+    inputTitle.classList.add("modal-edit__input");
+    inputTitle.id = "titleInput";
+    inputTitle.type = "text";
+    inputTitle.value = post.title;
+
+    labelTitle.append(inputTitle);
+
+    //Create label body
+    const labelBody = document.createElement("label");
+    labelBody.classList.add("modal-edit__label");
+    labelBody.htmlFor = "bodyInput";
+    labelBody.textContent = "Body:";
+    //Create input body
+    const inputBody = document.createElement("input");
+    inputBody.classList.add("modal-edit__input");
+    inputBody.id = "bodyInput";
+    inputBody.type = "text";
+    inputBody.value = post.body;
+
+    labelBody.append(inputBody);
+
+    //Create label savebutton
+    const labelSave = document.createElement("label");
+    labelSave.classList.add("modal-edit__label");
+    labelSave.htmlFor = "saveBtn";
+    //Create input savebutton
+    const inputSave = document.createElement("input");
+    inputSave.classList.add("modal-edit__input");
+    inputSave.id = "saveBtn";
+    inputSave.type = "submit";
+    inputSave.value = "Save";
+    formBody.addEventListener("click", await modifyPost(post, parentContainer, inputTitle.value, inputBody.value));
+    labelSave.append(inputSave);
+
+    //ADD TO FORM
+    formBody.append(labelTitle, labelBody, labelSave);
+    //ADD FORM TO CONTAINER
+    parentContainer.append(h2, formBody);
+
+    parentContainer.parentElement.classList.toggle("container--hide");
+}
+
+//!MODIFY POST BY FETCH REQUEST
+async function modifyPost(post, element, titlePost, bodyPost) {
+    const urlPost = `http://localhost:3000/posts/${post.id}`;
+
+    const vuelta = await modify(urlPost, titlePost, bodyPost);
+    console.log(vuelta);
+
+
+    // fetch(urlPost, {
+    //         method: 'PUT',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             userId: post.userId,
+    //             title: titlePost,
+    //             body: bodyPost,
+    //         })
+    //     })
+    //     .then(res => res.text()) // or res.json()
+    //     .then(res => {
+    //         // alert(res + 'modificado')
+    //     })
+
+    // Reset
+    // reset();
+    // element.parentElement.classList.toggle("container--hide");
+}
+
+async function modify(urlPost, post, titlePost, bodyPost) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: post.userId,
+            title: titlePost,
+            body: bodyPost,
+            id: post.id,
+        })
+    };
+    const response = await fetch(urlPost, requestOptions);
+    const data = await response.json();
+    return data;
+}
+
+function reset() {
+    postContainer.textContent = "";
+    controlRepeated = [];
+    indexPost = 0;
+    getPosts();
+}
