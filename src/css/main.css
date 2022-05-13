@@ -79,7 +79,34 @@ body {
 .post__img img {
   width: 100%;
 }
-/*!MODAL*/
-.modal--hide {
-  display: none;
+/*!MODAL GENERAL*/
+.modal {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(128, 128, 128, 0.966);
+}
+.container--hide {
+  display: none !important;
+}
+.modal__close {
+  position: absolute;
+  color: white;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+/*!MODAL INFO*/
+.modal__content {
+  position: relative;
+  width: 70%;
+  height: 80%;
+  background-color: #000000;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
