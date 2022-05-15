@@ -152,7 +152,7 @@ async function addElementModal(post) {
   //ADD ALL TO CONTAINER
   parentContainer.append(closeModalBtn, h2, body, divUser, sectionComments);
 
-  toogleDisplay(parentContainer.parentElement);
+  toogleDisplay(parentContainer.parentElement.parentElement);
 }
 
 //!GET DATA FROM URL COMMENTS
