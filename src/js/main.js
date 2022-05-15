@@ -68,9 +68,8 @@ async function addPosts(post) {
     //add all to article
     article.append(sectionImg, sectionInfo);
 
-    //ADD to general container
-    postContainer.appendChild(article);
-    console.log(article);
+  //ADD to general container
+  postContainer.appendChild(article);
 }
 
 //!GET USERNAME
@@ -99,17 +98,17 @@ async function addElementModal(post) {
     const parentContainer = document.getElementById("modalContent");
     parentContainer.textContent = "";
 
-    //Close modal
-    const closeModalBtn = document.createElement("button");
-    closeModalBtn.textContent = "X";
-    closeModalBtn.classList.add("modal__close");
-    closeModalBtn.addEventListener("click", () =>
-        toogleDisplay(parentContainer.parentElement)
-    );
-    //Create title
-    const h2 = document.createElement("h2");
-    h2.classList.add("modal__title");
-    h2.textContent = post.title;
+  //Close modal
+  const closeModalBtn = document.createElement("button");
+  closeModalBtn.textContent = "X";
+  closeModalBtn.classList.add("modal__close");
+  closeModalBtn.addEventListener("click", () =>
+    toogleDisplay(parentContainer.parentElement.parentElement)
+  );
+  //Create title
+  const h2 = document.createElement("h2");
+  h2.classList.add("modal__title");
+  h2.textContent = post.title;
 
     //Create body
     const body = document.createElement("p");
@@ -120,39 +119,57 @@ async function addElementModal(post) {
     const divUser = document.createElement("div");
     divUser.classList.add("modal__user-info");
 
-    //Create username
-    const user = await getUsername(post.userId);
-    const username = document.createElement("p");
-    username.classList.add("user-info__username");
-    username.textContent = user.username;
-    //Create email
-    const email = document.createElement("p");
-    email.classList.add("user-info__email");
-    email.textContent = user.email;
-    //getUsername function
-    //add to userinfo div the p
-    divUser.append(username, email);
+  //Create username
+  const userContainer = document.createElement("div");
+  userContainer.classList.add("user__container");
+  const user = await getUsername(post.userId);
+  const username = document.createElement("p");
+  username.classList.add("user-info__username");
+  username.textContent = user.username;
+  const userIcon = document.createElement("i");
+  userIcon.className = "fa-solid fa-circle-user";
+  userContainer.append(userIcon, username);
 
-    //Create section comments
-    const sectionComments = document.createElement("section");
-    sectionComments.classList.add("modal__comments");
-    //create button show comments
-    const showCommentesBtn = document.createElement("button");
-    showCommentesBtn.classList.add("comments__show-btn");
-    showCommentesBtn.textContent = "Show comments";
-    showCommentesBtn.addEventListener("click", () => getDataComments(post.id));
-    //Create comments container
-    const containerComments = document.createElement("section");
-    containerComments.classList.add("comments-container");
-    containerComments.classList.add("container--hide");
-    containerComments.id = "commentsContainer";
-    //add to section
-    sectionComments.append(showCommentesBtn, containerComments);
+  //Create email
+  const emailContainer = document.createElement("div");
+  emailContainer.classList.add("email__container");
+  const email = document.createElement("p");
+  email.classList.add("user-info__email");
+  email.textContent = user.email;
+  const emailIcon = document.createElement("i");
+  emailIcon.className = "fa-solid fa-envelope";
+  emailContainer.append(emailIcon, email);
 
-    //ADD ALL TO CONTAINER
-    parentContainer.append(closeModalBtn, h2, body, divUser, sectionComments);
+  //add to userinfo div the p
+  divUser.append(userContainer, emailContainer);
 
-    toogleDisplay(parentContainer.parentElement);
+  //button container
+  const btnContainer = document.createElement("div");
+  btnContainer.classList.add("modal__button-container");
+  //create button show comments
+  const showCommentesBtn = document.createElement("button");
+  showCommentesBtn.classList.add("comments__show-btn");
+  showCommentesBtn.classList.add("primary__btn");
+  showCommentesBtn.textContent = "Show comments";
+  showCommentesBtn.addEventListener("click", () => getDataComments(post.id));
+  btnContainer.append(showCommentesBtn);
+  //Create comments container
+  const containerComments = document.createElement("section");
+  containerComments.classList.add("comments-container");
+  containerComments.classList.add("container--hide");
+  containerComments.id = "commentsContainer";
+
+  //ADD ALL TO CONTAINER
+  parentContainer.append(
+    closeModalBtn,
+    h2,
+    body,
+    divUser,
+    btnContainer,
+    containerComments
+  );
+
+  toogleDisplay(parentContainer.parentElement.parentElement);
 }
 
 //!GET DATA FROM URL COMMENTS
@@ -173,23 +190,27 @@ function getDataComments(postId) {
 
 //!ADD COMMENTS TO HTML
 function addCommentsToSection(comment, containerComments) {
-    //create comments elements
-    const commentName = document.createElement("h3");
-    commentName.classList.add("comment__name");
-    commentName.textContent = comment.name;
+  const commentItem = document.createElement("div");
+  commentItem.classList.add("comment__item");
+  //create comments elements
+  const commentName = document.createElement("h3");
+  commentName.classList.add("comment__name");
+  commentName.textContent = comment.name;
 
     const commentEmail = document.createElement("p");
     commentEmail.classList.add("comment__email");
     commentEmail.textContent = comment.email;
 
-    const commentBody = document.createElement("p");
-    commentBody.classList.add("comment__body");
-    commentBody.textContent = comment.body;
-    console.log(containerComments);
+  const commentBody = document.createElement("p");
+  commentBody.classList.add("comment__body");
+  commentBody.textContent = comment.body;
 
-    //add comments elements to containerComments
-    containerComments.append(commentName, commentEmail, commentBody);
-    toogleDisplay(containerComments);
+  const line = document.createElement("hr");
+  line.classList.add("comment__separator");
+  //add comments elements to containerComments
+  commentItem.append(commentName, commentEmail, commentBody, line);
+  containerComments.append(commentItem);
+  toogleDisplay(containerComments);
 }
 const parentContainer = document.querySelector(".modal");
 parentContainer.addEventListener("click", (event) =>
