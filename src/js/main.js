@@ -8,7 +8,6 @@ window.onload = () => {
     getPosts();
 };
 
-
 //!ADD INFINITY SCROLL
 postContainer.addEventListener('scroll', () => {
     if (postContainer.scrollTop + postContainer.clientHeight >=
@@ -32,7 +31,7 @@ const getPosts = () => {
 //!ADD POSTS HTML
 async function addPosts(post) {
 
-    let titlePost = post.title;
+    let titlePost = capitalizeFirstLetter(post.title);
     let usernamePost = await getUsername(post.userId);
     let idPost = post.id;
     let imagePost = getImagesSplash(99);
@@ -119,7 +118,7 @@ async function createHTMLpostSection(image, title, username, id) {
     userName.textContent = `by ${username}`;
 
     //add title,username and buttons to body
-    sectionBody.append(sectionButtons, h2, userName);
+    sectionBody.append(h2, userName, sectionButtons);
     //add all to article
     article.append(img1, img2, sectionBody);
 
@@ -194,7 +193,7 @@ function getDataModal(e) {
         const clickPostID = this.dataset.id;
         fetchToServerPosts(clickPostID);
     } else if (e.target.id === "editBtn") {
-        const clickPostID = e.target.parentElement.parentElement.dataset.id;
+        const clickPostID = e.target.parentElement.parentElement.parentElement.dataset.id;
         fetchToServerPosts(clickPostID, false);
     } else if (e.target.id === "deleteBtn") {
         deletePost(e);
@@ -375,26 +374,24 @@ async function fetchToModifyPosts(url, post) {
     });
     const result = await responsePUT.text();
     //!TODOcreate popup to indicate if the user is sure about modifying the post
-    alert(result + 'modificado');
+    alert(result + 'modified');
 
 }
 
 //!DELETE POST BY FETCH REQUEST
 async function deletePost(e) {
-    const clickPostID = e.target.parentElement.parentElement.dataset.id;
+    const clickPostID = e.target.parentElement.parentElement.parentElement.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
+    console.log(urlPost);
     const responseDELETE = await fetch(urlPost, {
         method: 'DELETE'
     });
     const result = await responseDELETE.text();
     //!TODOcreate popup to indicate if the user is sure about deleting the post
-    alert(result + 'eliminado')
+    alert(result + 'posts and comments deleted')
 }
 
-
-function reset() {
-    postContainer.textContent = "";
-    controlRepeated = [];
-    indexPost = 0;
-    getPosts();
+//!CAPITALIZE FIRST LETTER
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
