@@ -185,7 +185,7 @@ function getDataModal(e) {
         const clickPostID = e.target.parentElement.parentElement.dataset.id;
         fetchToServerPosts(clickPostID, false);
     } else if (e.target.id === "deleteBtn") {
-
+        deletePost(e);
     }
 }
 
@@ -332,7 +332,6 @@ function updateValue(e){
     } else if (e.target.id = "bodyInput") {
         const body = document.getElementById("bodyInput");
         body.value = e.target.value;
-        console.log('cambia2');
     } 
 }
 
@@ -345,7 +344,6 @@ async function modifyPost(e) {
     const response = await fetch(urlPost);
     const post = await response.json();
     fetchToModifyPosts(urlPost, post);
-    
 }
 
 async function fetchToModifyPosts(url, post) {
@@ -364,28 +362,21 @@ async function fetchToModifyPosts(url, post) {
             })
         });
     const result = await responsePUT.text();
-    console.log(result);
+    //!TODOcreate popup to indicate if the user is sure about modifying the post
     alert(result + 'modificado');
 
 }
 
-async function modify(urlPost, post, titlePost, bodyPost) {
-    const requestOptions = {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            userId: post.userId,
-            title: titlePost,
-            body: bodyPost,
-            id: post.id,
-        })
-    };
-    const response = await fetch(urlPost, requestOptions);
-    const data = await response.json();
-    return data;
+//!DELETE POST BY FETCH REQUEST
+async function deletePost(e) {
+    const clickPostID = e.target.parentElement.parentElement.dataset.id;
+    const urlPost = `http://localhost:3000/posts/${clickPostID}`;
+    const responseDELETE = await fetch(urlPost, {method: 'DELETE'});
+    const result = await responseDELETE.text();
+    //!TODOcreate popup to indicate if the user is sure about deleting the post
+    alert(result + 'eliminado')
 }
+
 
 function reset() {
     postContainer.textContent = "";
