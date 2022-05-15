@@ -116,7 +116,7 @@ async function createHTMLpostSection(image, title, username, id) {
     //create username
     const userName = document.createElement("p");
     userName.classList.add("card-text");
-    userName.textContent = `by ${username}`;
+    userName.textContent = `by ${username.username}`;
 
     //add title,username and buttons to body
     sectionBody.append(h2, userName, sectionButtons);
@@ -132,7 +132,7 @@ async function getUsername(userId) {
     const userURL = `http://localhost:3000/users/${userId}`;
     const response = await fetch(userURL);
     const user = await response.json();
-    return user.username;
+    return user;
 }
 
 //!GET IMAGES
@@ -244,6 +244,7 @@ async function addElementModal(post) {
     const userContainer = document.createElement("div");
     userContainer.classList.add("user__container");
     const user = await getUsername(post.userId);
+    console.log(user);
     const username = document.createElement("p");
     username.classList.add("user-info__username");
     username.textContent = user.username;
