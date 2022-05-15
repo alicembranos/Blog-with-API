@@ -1,5 +1,8 @@
+//!GENERAL VARIABLES
 const urlPosts = "http://localhost:3000/posts";
 const postContainer = document.getElementById("blogPosts");
+
+//!ON LOAD WINDOW SHOW ALL POST
 window.onload = () => {
     getPosts();
 };
@@ -82,7 +85,6 @@ async function getUsername(userId) {
 function getDataModal(e) {
     const clickPostID = this.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
-    const modalContainer = document.getElementById("modal");
     if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
         fetch(urlPost)
             .then((response) => response.json())
@@ -91,12 +93,19 @@ function getDataModal(e) {
             });
     }
 }
+
 // !ADD ELEMENTS TO MODAL
 async function addElementModal(post) {
     const parentContainer = document.getElementById("modalContent");
     parentContainer.textContent = "";
-    //Close modal
 
+    //Close modal
+    const closeModalBtn = document.createElement("button");
+    closeModalBtn.textContent = "X";
+    closeModalBtn.classList.add("modal__close");
+    closeModalBtn.addEventListener("click", () =>
+        toogleDisplay(parentContainer.parentElement)
+    );
     //Create title
     const h2 = document.createElement("h2");
     h2.classList.add("modal__title");
@@ -129,17 +138,71 @@ async function addElementModal(post) {
     sectionComments.classList.add("modal__comments");
     //create button show comments
     const showCommentesBtn = document.createElement("button");
-    showCommentesBtn.classList.add("comments-container");
+    showCommentesBtn.classList.add("comments__show-btn");
     showCommentesBtn.textContent = "Show comments";
+    showCommentesBtn.addEventListener("click", () => getDataComments(post.id));
     //Create comments container
     const containerComments = document.createElement("section");
     containerComments.classList.add("comments-container");
     containerComments.classList.add("container--hide");
+    containerComments.id = "commentsContainer";
     //add to section
     sectionComments.append(showCommentesBtn, containerComments);
 
     //ADD ALL TO CONTAINER
-    parentContainer.append(h2, body, divUser, sectionComments);
+    parentContainer.append(closeModalBtn, h2, body, divUser, sectionComments);
 
-    parentContainer.parentElement.classList.toggle("container--hide");
+    toogleDisplay(parentContainer.parentElement);
+}
+
+//!GET DATA FROM URL COMMENTS
+function getDataComments(postId) {
+    const containerComments = document.getElementById("commentsContainer");
+    containerComments.textContent = "";
+    const commentsURL = `http://localhost:3000/comments`;
+    fetch(commentsURL)
+        .then((response) => response.json())
+        .then((data) => {
+            for (const comment of data) {
+                if (comment.postId === postId) {
+                    addCommentsToSection(comment, containerComments);
+                }
+            }
+        });
+}
+
+//!ADD COMMENTS TO HTML
+function addCommentsToSection(comment, containerComments) {
+    //create comments elements
+    const commentName = document.createElement("h3");
+    commentName.classList.add("comment__name");
+    commentName.textContent = comment.name;
+
+    const commentEmail = document.createElement("p");
+    commentEmail.classList.add("comment__email");
+    commentEmail.textContent = comment.email;
+
+    const commentBody = document.createElement("p");
+    commentBody.classList.add("comment__body");
+    commentBody.textContent = comment.body;
+    console.log(containerComments);
+
+    //add comments elements to containerComments
+    containerComments.append(commentName, commentEmail, commentBody);
+    toogleDisplay(containerComments);
+}
+const parentContainer = document.querySelector(".modal");
+parentContainer.addEventListener("click", (event) =>
+    closeModal(parentContainer, event)
+);
+
+function closeModal(element, event) {
+    if (element === event.target) {
+        toogleDisplay(element);
+    }
+}
+
+//!TOGGLE DISPLAY ELEMENT HIDE/SHOW
+function toogleDisplay(element) {
+    element.classList.toggle("container--hide");
 }
