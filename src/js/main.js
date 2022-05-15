@@ -72,18 +72,29 @@ async function createHTMLpostSection(image, title, username, id) {
 
     //Article
     const article = document.createElement("article");
-    article.classList.add("post");
+    article.classList.add("card");
+    // article.style.width = "18rem";
     article.dataset.id = id;
     article.addEventListener("click", getDataModal);
 
-    //*Img container
-    const sectionImg = document.createElement("section");
-    sectionImg.classList.add("post__img");
-
     //Img element
-    const img = document.createElement("img");
-    img.classList.add("post__image");
-    img.src = image;
+    const img1 = document.createElement("div");
+    img1.classList.add("card-img");
+    // img1.classList.add("card-img-top", "card-img");
+    img1.style.backgroundImage = `url(${image})`;
+
+    const img2 = document.createElement("div");
+    img2.classList.add("card__img--hover");
+    img2.style.backgroundImage = `url(${image})`;
+
+
+    //Body container
+    const sectionBody = document.createElement("section");
+    sectionBody.classList.add("card-info");
+
+    //Buttons container
+    const sectionButtons = document.createElement("section");
+    sectionButtons.classList.add("card-buttons");
 
     //Delete and Edit buttons
     const deleteButton = document.createElement("button");
@@ -92,24 +103,25 @@ async function createHTMLpostSection(image, title, username, id) {
     editButton.id = "editBtn";
     deleteButton.textContent = "Delete";
     editButton.textContent = "Edit";
+    deleteButton.classList.add("btn", "buttons_posts");
+    editButton.classList.add("btn", "buttons_posts");
 
-    sectionImg.append(img, deleteButton, editButton);
+    //add buttons to their section
+    sectionButtons.append(editButton, deleteButton);
 
-    //Info container
-    const sectionInfo = document.createElement("section");
-    sectionInfo.classList.add("post__info");
     //create title
     const h2 = document.createElement("h2");
-    h2.classList.add("post__info-title");
+    h2.classList.add("card-title");
     h2.textContent = title;
     //create username
     const userName = document.createElement("p");
-    userName.textContent = username;
-    userName.classList.add("post__info-username");
-    //add title,username to containerInfo
-    sectionInfo.append(h2, userName);
+    userName.classList.add("card-text");
+    userName.textContent = `by ${username}`;
+
+    //add title,username and buttons to body
+    sectionBody.append(sectionButtons, h2, userName);
     //add all to article
-    article.append(sectionImg, sectionInfo);
+    article.append(img1, img2, sectionBody);
 
     //ADD to general container
     postContainer.appendChild(article);
@@ -325,14 +337,14 @@ async function addElementModalEdit(post) {
 }
 
 //!UPDATE INPUT FIELDS
-function updateValue(e){
+function updateValue(e) {
     if (e.target.id = "titleInput") {
         const title = document.getElementById("titleInput");
         title.value = e.target.value;
     } else if (e.target.id = "bodyInput") {
         const body = document.getElementById("bodyInput");
         body.value = e.target.value;
-    } 
+    }
 }
 
 //!MODIFY POST BY FETCH REQUEST
@@ -350,17 +362,17 @@ async function fetchToModifyPosts(url, post) {
     const titlePost = document.getElementById("titleInput").value;
     const bodyPost = document.getElementById("bodyInput").value;
     const responsePUT = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId: post.userId,
-                title: titlePost,
-                body: bodyPost,
-                id: post.id
-            })
-        });
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userId: post.userId,
+            title: titlePost,
+            body: bodyPost,
+            id: post.id
+        })
+    });
     const result = await responsePUT.text();
     //!TODOcreate popup to indicate if the user is sure about modifying the post
     alert(result + 'modificado');
@@ -371,7 +383,9 @@ async function fetchToModifyPosts(url, post) {
 async function deletePost(e) {
     const clickPostID = e.target.parentElement.parentElement.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
-    const responseDELETE = await fetch(urlPost, {method: 'DELETE'});
+    const responseDELETE = await fetch(urlPost, {
+        method: 'DELETE'
+    });
     const result = await responseDELETE.text();
     //!TODOcreate popup to indicate if the user is sure about deleting the post
     alert(result + 'eliminado')
