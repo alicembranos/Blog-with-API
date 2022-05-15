@@ -6,6 +6,9 @@ let indexPost = 0; //Last post load
 
 
 window.onload = () => {
+    for (let i = 0; i < 10; i++) {
+        createSkeleton();
+    }
     getPosts();
 };
 
@@ -13,6 +16,7 @@ window.onload = () => {
 postContainer.addEventListener('scroll', () => {
     if (postContainer.scrollTop + postContainer.clientHeight >=
         postContainer.scrollHeight) {
+        createSkeleton();
         getPosts();
     }
 })
@@ -29,9 +33,52 @@ const getPosts = () => {
         });
 };
 
+//!CREATE SKELETON TEMPLATE
+function createSkeleton() {
+    //Article
+    const article = document.createElement("article");
+    article.classList.add("card", "is-loading");
+
+    //Img element
+    const img1 = document.createElement("div");
+    img1.classList.add("card-img");
+
+    //Body container
+    const sectionBody = document.createElement("section");
+    sectionBody.classList.add("card-info");
+
+    //Buttons container
+    const sectionButtons = document.createElement("section");
+    sectionButtons.classList.add("card-buttons");
+
+    //Delete and Edit buttons
+    const deleteButton = document.createElement("button");
+    const editButton = document.createElement("button");
+    deleteButton.classList.add("btn", "buttons_posts");
+    editButton.classList.add("btn", "buttons_posts");
+
+    //add buttons to their section
+    sectionButtons.append(editButton, deleteButton);
+
+    //create title
+    const h2 = document.createElement("h2");
+    h2.classList.add("card-title");
+    //create username
+    const userName = document.createElement("p");
+    userName.classList.add("card-text");
+
+    //add title,username and buttons to body
+    sectionBody.append(h2, userName, sectionButtons);
+    //add all to article
+    article.append(img1, sectionBody);
+
+    //ADD to general container
+    postContainer.appendChild(article);
+}
+
 //!ADD POSTS HTML
 async function addPosts(post) {
-
+    postContainer.textContent = "";
     let titlePost = capitalizeFirstLetter(post.title);
     let usernamePost = await getUsername(post.userId);
     let idPost = post.id;
