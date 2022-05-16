@@ -253,8 +253,8 @@ function randomIndex(num) {
 
 
 //!GET DATA FOR MODAL SPECIFIC POST
-function getDataModal(e) {
-    const popupParent = document.getElementById("popup");
+async function getDataModal(e) {
+
     if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
         const clickPostID = this.dataset.id;
         fetchToServerPosts(clickPostID);
@@ -262,8 +262,13 @@ function getDataModal(e) {
         const clickPostID = e.target.parentElement.parentElement.parentElement.dataset.id;
         fetchToServerPosts(clickPostID, false);
     } else if (e.target.id === "deleteBtn") {
-        deletePost(e);
+        const popupModal = document.getElementById("popup");
+        const responseDelete = await deletePost(e);
+        const clickPostID = e.target.parentElement.parentElement.parentElement.dataset.id;
+        popup(clickPostID, popupModal, false, responseDelete);
+        removeCard(clickPostID);
     }
+
 }
 
 async function fetchToServerPosts(id, info = true) {
@@ -454,7 +459,7 @@ async function addElementModalEdit(post) {
     const inputSave = document.createElement("input");
     inputSave.classList.add("modal-edit__input");
     inputSave.id = "saveBtn";
-    inputSave.type = "button";
+    inputSave.type = "submit";
     inputSave.value = "Save";
     labelSave.append(inputSave);
 
@@ -468,10 +473,7 @@ async function addElementModalEdit(post) {
         modifyPost(e);
     });
 
-    formBody.addEventListener("submit", (e) => {
-        e.preventDefault()
-    });
-    
+
     parentContainer.parentElement.classList.toggle("container--hide");
 }
 
@@ -489,7 +491,6 @@ function updateValue(e) {
 //!MODIFY POST BY FETCH REQUE
 //!GET DATA FOR MODAL SPECIFIC POST
 async function modifyPost(e) {
-
     const popupModal = document.getElementById("popup");
     const clickPostID = e.target.parentElement.parentElement.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
@@ -498,13 +499,15 @@ async function modifyPost(e) {
     const result = await fetchToModifyPosts(urlPost, post);
     //show popup info after modify post
     popup(clickPostID, popupModal, true, result);
+    const titlePost = document.getElementById("titleInput").value;
+
 }
 
 async function fetchToModifyPosts(url, post) {
     const titlePost = document.getElementById("titleInput").value;
     const bodyPost = document.getElementById("bodyInput").value;
     try {
-        const responsePUT = await fetch(url, {
+        await fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -516,6 +519,7 @@ async function fetchToModifyPosts(url, post) {
                 id: post.id
             })
         });
+        updateCard(post.id, titlePost);
         return false;
     } catch (error) {
         console.log(error);
@@ -523,12 +527,25 @@ async function fetchToModifyPosts(url, post) {
     }
 }
 
+//!FUNCTION TO REMOVE POST
+function removeCard(id){
+    const element = document.querySelector((`article[data-id='${id}']`));
+    element.remove();
+}
+
+//!FUNCTION TO UPDATE POST CARD INFO
+function updateCard(id, title){
+    const element = document.querySelector((`article[data-id='${id}']`));
+    const titleElement = element.querySelector(".card-title");
+    titleElement.textContent = title;
+}
+
 //!DELETE POST BY FETCH REQUEST
 async function deletePost(e) {
     const clickPostID = e.target.parentElement.parentElement.parentElement.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
     try {
-        const responseDELETE = await fetch(urlPost, {
+        await fetch(urlPost, {
             method: 'DELETE'
         });
         // const result = await responseDELETE.text();
@@ -537,7 +554,6 @@ async function deletePost(e) {
         console.log(error);
         return true;
     }
-    //!TODOcreate popup to indicate if the user is sure about deleting the post
 
 }
 
@@ -548,6 +564,12 @@ function capitalizeFirstLetter(string) {
 
 //!POPUP MODAL EDIT/DELETE INFO
 function popup(id, container, edit = true, error = false) {
+
+    //Remove last popup create if exists
+    const popup = document.getElementById("popup").childNodes;
+    if (popup.length > 0) {
+        Array.from(popup).map(child => child.remove());
+    }
 
     const modalDialog = document.createElement("div");
     modalDialog.classList.add("modal-dialog");
@@ -589,21 +611,25 @@ function popup(id, container, edit = true, error = false) {
     //Popup buttons
     const buttonClose = document.createElement("button");
     buttonClose.classList.add("btn", "btn-secondary");
-    buttonClose.setAttribute("data-bs-dismiss", "modal");
     buttonClose.textContent = "Close";
-    const buttonOk = document.createElement("button");
-    buttonOk.classList.add("btn", "btn-primary");
-    buttonOk.textContent = "OK";
+    buttonClose.addEventListener("click", () => {
+        const editModal = document.getElementById("modalContentEdit").parentElement;
+        toogleDisplay(container);
+        //Depending on delete or edit function
+        if (!editModal.classList.contains("container--hide")) {
+            toogleDisplay(editModal);
+        }
+    });
 
-    modalFooter.append(buttonClose, buttonOk);
+    modalFooter.append(buttonClose);
     modalContent.append(modalHeader, modalBody, modalFooter);
     modalDialog.append(modalContent);
 
     container.append(modalDialog);
 
     toogleDisplay(container);
-}
 
+}
 
 //!MODAL FUNCTIONALITY
 const parentContainer = document.querySelector(".modal");
