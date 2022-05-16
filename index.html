@@ -1,118 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BLOG</title>
+    <link
+      href="./node_modules/bootstrap/dist/css/bootstrap.css"
+      rel="stylesheet"
+    />
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.js" defer></script>
+    <link rel="stylesheet" href="src/css/main.css" />
+    <script src="src/js/main.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/c866d00507.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BLOG</title>
-  <link href="./node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-  <script src="./node_modules/bootstrap/dist/js/bootstrap.js" defer></script>
-  <link rel="stylesheet" href="src/css/main.css" />
-  <script src="src/js/main.js" defer></script>
-  <script src="https://kit.fontawesome.com/c866d00507.js" crossorigin="anonymous"></script>
-</head>
-
-<body>
-  <video autoplay muted loop class="video">
-    <source src="./src/assets/video/videoplayback.mp4" type="video/mp4">
-  </video>
-  <section class="blog">
-    <header class="blog__header">
-      <div class="header__logo">
-        <img src="https://via.placeholder.com/100x100" alt="" />
-      </div>
-      <nav class="header__menu">
-        <!-- TEST MENU -->
-        <ul>
-          <li><a href="" class="selected">Home</a></li>
-          <li><a href="">Nature</a></li>
-          <li><a href="">Sports</a></li>
-          <li><a href="">Fruits</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="blog__content">
-      <section class="blog__slider" id="blogSlider">
-        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-          <div class="carousel-inner" id="carouselContent">
+  <body>
+    <video autoplay muted loop class="video">
+      <source src="./src/assets/video/videoplayback.mp4" type="video/mp4" />
+    </video>
+    <section class="blog">
+      <header class="blog__header">
+        <div class="header__logo">
+          <img src="./src/assets/images/logo (2).png" alt="" />
+        </div>
+        <nav class="header__menu">
+          <!-- TEST MENU -->
+          <ul>
+            <li><a href="" class="selected">Home</a></li>
+            <li><a href="">Nature</a></li>
+            <li><a href="">Sports</a></li>
+            <li><a href="">Fruits</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main class="blog__content">
+        <section class="blog__slider" id="blogSlider">
+          <div
+            id="carouselExampleFade"
+            class="carousel slide carousel-fade"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner" id="carouselContent"></div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleFade"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleFade"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-        </div>
-      </section>
-      <section class="blog__posts scrollbar" id="blogPosts">
-        <!-- TEST ARTICLE -->
-      </section>
-    </main>
-  </section>
-  <div class="modal container--hide">
-    <section class="modal-info">
-      <div class="modal__img"></div>
-      <section class="modal__content" id="modalContent">
-        <span class="modal__close" id="closeModal">X</span>
-        <h1 class="modal__title" id="modalTitle">TITLE</h1>
-        <p class="modal__body" id="modalBody">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum
-          impedit voluptates animi soluta illum amet cumque in vitae modi!
-          Sed. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          Similique, perspiciatis!
-        </p>
-        <div class="modal__user-info">
-          <p class="user-info__username" id="username">ivanescribano1998</p>
-          <p class="user-info__email" id="email">ivanescribano@gmail.com</p>
-        </div>
-        <div class="modal__button-container">
-          <button class="comments__show-btn primary__btn" id="showComments">
-            Show comments
-          </button>
-        </div>
-        <section class="modal__comments">
-          <section class="comments-container" id="commentsContainer">
-            <!-- TEST COMMENT -->
-            <div class="comment__item">
-              <h3 class="comment__name">Esto es un comentario</h3>
-              <p class="comment__email">aliciacembranos@gmail.com</p>
-              <p class="comment__body">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Odit, aspernatur!
-              </p>
-            </div>
-            <!-- TEST COMMENT -->
-            <div class="comment__item">
-              <h3 class="comment__name">Esto es un comentario</h3>
-              <p class="comment__email">aliciacembranos@gmail.com</p>
-              <p class="comment__body">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Odit, aspernatur!
-              </p>
-            </div>
-            <!-- TEST COMMENT -->
-            <div class="comment__item">
-              <h3 class="comment__name">Esto es un comentario</h3>
-              <p class="comment__email">aliciacembranos@gmail.com</p>
-              <p class="comment__body">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Odit, aspernatur!
-              </p>
-            </div>
-            <!-- TEST COMMENT -->
-            <div class="comment__item">
-              <h3 class="comment__name">Esto es un comentario</h3>
-              <p class="comment__email">aliciacembranos@gmail.com</p>
-              <p class="comment__body">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Odit, aspernatur!
-              </p>
-            </div>
+        </section>
+        <section class="blog__posts scrollbar" id="blogPosts">
+          <!-- TEST ARTICLE -->
+        </section>
+      </main>
+    </section>
+    <div class="modal container--hide">
+      <section class="modal-info">
+        <div class="modal__img"></div>
+        <section class="modal__content" id="modalContent">
+          <span class="modal__close" id="closeModal">X</span>
+          <h1 class="modal__title" id="modalTitle">TITLE</h1>
+          <p class="modal__body" id="modalBody">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum
+            impedit voluptates animi soluta illum amet cumque in vitae modi!
+            Sed. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Similique, perspiciatis!
+          </p>
+          <div class="modal__user-info">
+            <p class="user-info__username" id="username">ivanescribano1998</p>
+            <p class="user-info__email" id="email">ivanescribano@gmail.com</p>
+          </div>
+          <div class="modal__button-container">
+            <button class="comments__show-btn primary__btn" id="showComments">
+              Show comments
+            </button>
+          </div>
+          <section class="modal__comments">
+            <section class="comments-container" id="commentsContainer">
+              <!-- TEST COMMENT -->
+              <div class="comment__item">
+                <h3 class="comment__name">Esto es un comentario</h3>
+                <p class="comment__email">aliciacembranos@gmail.com</p>
+                <p class="comment__body">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Odit, aspernatur!
+                </p>
+              </div>
+              <!-- TEST COMMENT -->
+              <div class="comment__item">
+                <h3 class="comment__name">Esto es un comentario</h3>
+                <p class="comment__email">aliciacembranos@gmail.com</p>
+                <p class="comment__body">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Odit, aspernatur!
+                </p>
+              </div>
+              <!-- TEST COMMENT -->
+              <div class="comment__item">
+                <h3 class="comment__name">Esto es un comentario</h3>
+                <p class="comment__email">aliciacembranos@gmail.com</p>
+                <p class="comment__body">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Odit, aspernatur!
+                </p>
+              </div>
+              <!-- TEST COMMENT -->
+              <div class="comment__item">
+                <h3 class="comment__name">Esto es un comentario</h3>
+                <p class="comment__email">aliciacembranos@gmail.com</p>
+                <p class="comment__body">
+                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                  Odit, aspernatur!
+                </p>
+              </div>
+            </section>
           </section>
         </section>
       </section>

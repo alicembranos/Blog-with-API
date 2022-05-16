@@ -5,20 +5,21 @@ let modaLaunched = false;
 let controlRepeated = [];
 let indexPost = 0; //Last post load
 
-
 window.onload = () => {
     createSkeleton(4);
     getPosts();
 };
 
 //!ADD INFINITY SCROLL
-postContainer.addEventListener('scroll', () => {
-    if (postContainer.scrollTop + postContainer.clientHeight >=
-        postContainer.scrollHeight) {
+postContainer.addEventListener("scroll", () => {
+    if (
+        postContainer.scrollTop + postContainer.clientHeight >=
+        postContainer.scrollHeight
+    ) {
         createSkeleton(4);
         getPosts();
     }
-})
+});
 
 //!GET DATA
 const getPosts = () => {
@@ -37,8 +38,7 @@ getPosts();
 
 //!CREATE SKELETON TEMPLATE
 function createSkeleton(num) {
-
-    const skeleton = [...Array(num).keys()].map(card => {
+    const skeleton = [...Array(num).keys()].map((card) => {
         //Article
         const article = document.createElement("article");
         article.classList.add("card", "is-loading");
@@ -81,20 +81,18 @@ function createSkeleton(num) {
     });
 
     return skeleton;
-
 }
 
 //!REMOVE SKELETON CARDS
 function removeSkeleton() {
     const skeletonCards = document.querySelectorAll(".is-loading");
     if (skeletonCards) {
-        Array.from(skeletonCards).map(card => card.remove());
+        Array.from(skeletonCards).map((card) => card.remove());
     }
 }
 
 //!ADD POSTS HTML
 async function addPosts(post) {
-
     let titlePost = capitalizeFirstLetter(post.title);
     let usernamePost = await getUsername(post.userId);
     let idPost = post.id;
@@ -104,12 +102,11 @@ async function addPosts(post) {
     createHTMLsliderSection(imagePost, titlePost, idPost);
 
     //Remove active class
-    const divsCarousel = document.querySelectorAll('.carousel-item');
-    divsCarousel.forEach(div => {
-        div.classList.remove("active")
-    })
+    const divsCarousel = document.querySelectorAll(".carousel-item");
+    divsCarousel.forEach((div) => {
+        div.classList.remove("active");
+    });
     divsCarousel[0].classList.add("active");
-
 }
 
 async function createHTMLsliderSection(image, title, id) {
@@ -125,15 +122,13 @@ async function createHTMLsliderSection(image, title, id) {
     imgSlider.src = image;
 
     const titleSlider = document.createElement("h5");
-    titleSlider.textContent = title
+    titleSlider.textContent = title;
 
     div.append(imgSlider, titleSlider);
     carouselContent.append(div);
-
 }
 
 async function createHTMLpostSection(image, title, username, id) {
-
     //Article
     const article = document.createElement("article");
     article.classList.add("card");
@@ -150,7 +145,6 @@ async function createHTMLpostSection(image, title, username, id) {
     const img2 = document.createElement("div");
     img2.classList.add("card__img--hover");
     img2.style.backgroundImage = `url(${image})`;
-
 
     //Body container
     const sectionBody = document.createElement("section");
@@ -200,7 +194,7 @@ async function getUsername(userId) {
 }
 
 //!GET IMAGES
-async function getImages(filter = '') {
+async function getImages(filter = "") {
     const urlImages = "https://api.pexels.com/v1/curated?per_page=80";
     const dataImages = await fetchImages(urlImages);
     return generateRandomImage(dataImages);
@@ -210,21 +204,21 @@ async function fetchImages(url) {
     // const APIkey = "563492ad6f91700001000001bfb8fa2610e342dcbc6aaf2087ec52d0"; pexels
     const APIkey = "gKosga8otH1P9B-t1lcm2ZyIiFUPmOE8A0XN7Akra5M";
     const response = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: {
-            Accept: 'application/json',
-            Authorization: APIkey
-        }
+            Accept: "application/json",
+            Authorization: APIkey,
+        },
     });
     const data = await response.json();
     return data.photos;
 }
 
 function generateRandomImage(arrayImages) {
-    //Only 80 images in the API 
+    //Only 80 images in the API
     //we have 100 post, so that's why we control not to have repeated images until 80 posts
     let index;
-    let image = '';
+    let image = "";
     if (controlRepeated.length < 80) {
         index = randomIndex(arrayImages);
         while (controlRepeated[0] == arrayImages[index].id) {
@@ -237,20 +231,18 @@ function generateRandomImage(arrayImages) {
 
     image = arrayImages[index].src.tiny;
     return image;
-
 }
 
 //!GET IMAGE FROM UNSPLASH SOURCE
 function getImagesSplash(index) {
     const randomNumber = randomIndex(index);
-    const srcImages = `https://source.unsplash.com/16${randomNumber}x9${randomNumber}/`
+    const srcImages = `https://source.unsplash.com/16${randomNumber}x9${randomNumber}/`;
     return srcImages;
 }
 
 function randomIndex(num) {
-    return Math.floor((Math.random() * num) + 1);
+    return Math.floor(Math.random() * num + 1);
 }
-
 
 //!GET DATA FOR MODAL SPECIFIC POST
 async function getDataModal(e) {
@@ -279,7 +271,7 @@ async function fetchToServerPosts(id, info = true) {
             if (info) {
                 addElementModal(data);
             } else {
-                addElementModalEdit(data)
+                addElementModalEdit(data);
             }
         });
 }
@@ -314,6 +306,7 @@ async function addElementModal(post) {
     const userContainer = document.createElement("div");
     userContainer.classList.add("user__container");
     const user = await getUsername(post.userId);
+    console.log(user);
     const username = document.createElement("p");
     username.classList.add("user-info__username");
     username.textContent = user.username;
@@ -381,6 +374,7 @@ function getDataComments(postId) {
 
 //!ADD COMMENTS TO HTML
 function addCommentsToSection(comment, containerComments) {
+    containerComments.classList.add("scrollbar");
     const commentItem = document.createElement("div");
     commentItem.classList.add("comment__item");
     //create comments elements
@@ -409,13 +403,21 @@ async function addElementModalEdit(post) {
     const parentContainer = document.getElementById("modalContentEdit");
     parentContainer.textContent = "";
     //Close modal
+    parentContainer.parentElement.addEventListener("click", (event) => {
+        closeModal(parentContainer.parentElement, event);
+    });
 
-    //Create title
-    const h2 = document.createElement("h2");
-    h2.classList.add("modal__title");
-    h2.textContent = "Edit the post";
+    //Image create background
+    const backgorundImage = document.createElement("div");
+    backgorundImage.classList.add("modal-edit__img");
 
-    //Create form 
+    //Image illustration
+    const illustrationImage = document.createElement("div");
+    illustrationImage.classList.add("modal-edit__illustration");
+
+    backgorundImage.append(illustrationImage);
+
+    //Create form
     const formBody = document.createElement("form");
     formBody.classList.add("modal-edit__form");
     formBody.dataset.id = post.id;
@@ -432,7 +434,7 @@ async function addElementModalEdit(post) {
     inputTitle.id = "titleInput";
     inputTitle.type = "text";
     inputTitle.value = post.title;
-    inputTitle.addEventListener('change', updateValue);
+    inputTitle.addEventListener("change", updateValue);
 
     labelTitle.append(inputTitle);
 
@@ -442,8 +444,8 @@ async function addElementModalEdit(post) {
     labelBody.htmlFor = "bodyInput";
     labelBody.textContent = "Body:";
     //Create input body
-    const inputBody = document.createElement("input");
-    inputBody.classList.add("modal-edit__input");
+    const inputBody = document.createElement("textarea");
+    inputBody.classList.add("modal-edit__textarea");
     inputBody.id = "bodyInput";
     inputBody.type = "text";
     inputBody.value = post.body;
@@ -451,38 +453,46 @@ async function addElementModalEdit(post) {
 
     labelBody.append(inputBody);
 
-    //Create label savebutton
-    const labelSave = document.createElement("label");
-    labelSave.classList.add("modal-edit__label");
-    labelSave.htmlFor = "saveBtn";
     //Create input savebutton
     const inputSave = document.createElement("input");
-    inputSave.classList.add("modal-edit__input");
+    inputSave.classList.add("modal-edit__btn");
     inputSave.id = "saveBtn";
     inputSave.type = "submit";
     inputSave.value = "Save";
-    labelSave.append(inputSave);
 
+    //Close btn
+    const inputClose = document.createElement("input");
+    inputClose.className = "modal-edit__btn modal-edit__btn-close";
+    inputClose.id = "deleteBtn";
+    inputClose.type = "button";
+    inputClose.value = "Close";
+    inputClose.addEventListener("click", (e) => {
+        toogleDisplay(parentContainer.parentElement);
+    });
+
+    //Container buttons
+    const containerButtons = document.createElement("div");
+    containerButtons.append(inputClose, inputSave);
+    containerButtons.classList.add("modal-edit__container-btn");
     //ADD TO FORM
-    formBody.append(labelTitle, labelBody, labelSave);
+    formBody.append(labelTitle, labelBody);
     //ADD FORM TO CONTAINER
-    parentContainer.append(h2, formBody);
+    parentContainer.append(backgorundImage, formBody, containerButtons);
 
     inputSave.addEventListener("click", (e) => {
         e.preventDefault();
         modifyPost(e);
     });
 
-
     parentContainer.parentElement.classList.toggle("container--hide");
 }
 
 //!UPDATE INPUT FIELDS
 function updateValue(e) {
-    if (e.target.id = "titleInput") {
+    if ((e.target.id === "titleInput")) {
         const title = document.getElementById("titleInput");
         title.value = e.target.value;
-    } else if (e.target.id = "bodyInput") {
+    } else if ((e.target.id === "bodyInput")) {
         const body = document.getElementById("bodyInput");
         body.value = e.target.value;
     }
@@ -492,15 +502,13 @@ function updateValue(e) {
 //!GET DATA FOR MODAL SPECIFIC POST
 async function modifyPost(e) {
     const popupModal = document.getElementById("popup");
-    const clickPostID = e.target.parentElement.parentElement.dataset.id;
+    const clickPostID = e.target.parentElement.previousSibling.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
     const response = await fetch(urlPost);
     const post = await response.json();
     const result = await fetchToModifyPosts(urlPost, post);
     //show popup info after modify post
     popup(clickPostID, popupModal, true, result);
-    const titlePost = document.getElementById("titleInput").value;
-
 }
 
 async function fetchToModifyPosts(url, post) {
@@ -528,13 +536,13 @@ async function fetchToModifyPosts(url, post) {
 }
 
 //!FUNCTION TO REMOVE POST
-function removeCard(id){
+function removeCard(id) {
     const element = document.querySelector((`article[data-id='${id}']`));
     element.remove();
 }
 
 //!FUNCTION TO UPDATE POST CARD INFO
-function updateCard(id, title){
+function updateCard(id, title) {
     const element = document.querySelector((`article[data-id='${id}']`));
     const titleElement = element.querySelector(".card-title");
     titleElement.textContent = title;
