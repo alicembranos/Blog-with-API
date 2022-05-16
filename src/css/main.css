@@ -28,6 +28,15 @@ body {
   align-items: center;
 }
 
+.video{
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+}
+
 /*!BLOG GENERAL CONTAINER*/
 .blog {
   width: 80%;
@@ -40,13 +49,13 @@ body {
 /*!BLOG HEADER*/
 .blog__header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex: 1;
   align-items: center;
 }
 
 .header__logo {
-  flex: 1;
+  flex: 0.25;
 }
 
 .header__menu {
@@ -55,7 +64,29 @@ body {
 
 .header__menu>ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-start;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.header__menu>ul>li {
+  margin-right: 3rem;
+}
+
+.header__menu>ul>li>a {
+  font-family: var(--font-family-lato);
+  font-weight: 700;
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.header__menu>ul>li:hover {
+  transform: scale(1.2);
+}
+
+.header__menu>ul>li>a.selected {
+  color: var(--tertiary-color);
 }
 
 /*!BLOG CONTENT*/
@@ -349,7 +380,7 @@ body {
 /*!MODAL IMG*/
 .modal__img {
   flex: 1.2;
-  background-image: url("../assets/modal-info-img.jpg");
+  background-image: url("../assets/images/modal-info-img.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
