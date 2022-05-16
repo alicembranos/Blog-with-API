@@ -35,6 +35,7 @@ body {
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
+  filter:opacity(60%);
 }
 
 /*!BLOG GENERAL CONTAINER*/
@@ -49,13 +50,13 @@ body {
 /*!BLOG HEADER*/
 .blog__header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex: 1;
   align-items: center;
 }
 
 .header__logo {
-  flex: 0.25;
+  flex: 1;
 }
 
 .header__menu {
@@ -64,29 +65,7 @@ body {
 
 .header__menu>ul {
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 0;
-  padding-left: 0;
-  list-style: none;
-}
-
-.header__menu>ul>li {
-  margin-right: 3rem;
-}
-
-.header__menu>ul>li>a {
-  font-family: var(--font-family-lato);
-  font-weight: 700;
-  color: var(--primary-color);
-  text-decoration: none;
-}
-
-.header__menu>ul>li:hover {
-  transform: scale(1.2);
-}
-
-.header__menu>ul>li>a.selected {
-  color: var(--tertiary-color);
+  justify-content: space-around;
 }
 
 /*!BLOG CONTENT*/
@@ -108,14 +87,13 @@ body {
   cursor: pointer;
 }
 
-.carousel-item {
+.carousel-item{
   height: 67vh;
   padding: 1rem 0 0 1rem;
   border-radius: 12px;
 }
 
-.carousel-control-next,
-.carousel-control-prev {
+.carousel-control-next, .carousel-control-prev{
   margin-top: 1rem;
 }
 
@@ -136,8 +114,6 @@ body {
   font-weight: 700;
   color: var(--quaternary-color);
 }
-
-
 
 /*!BLOG-POSTS CONTAINER*/
 .blog__posts {
@@ -241,61 +217,16 @@ body {
   color: var(--quaternary-color);
 }
 
-/*!SKELETON POST CARD*/
-.card.is-loading>.card-img,
-.card.is-loading>.card-info>h2,
-.card.is-loading>.card-info>p,
-.card.is-loading>.card-info>.card-buttons>button {
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
-  background-size: 200% 100%;
-  animation: 1.5s shine linear infinite;
-}
-
-.card.is-loading>.card-info>h2,
-.card.is-loading>.card-info>p,
-.card.is-loading>.card-info>.card-buttons>button {
-  border-radius: 0px;
-}
-
-.card.is-loading>.card-img {
-  height: 200px;
-
-}
-
-.card.is-loading>.card-info>h2 {
-  margin-top: 1rem;
-  height: 80px;
-}
-
-.card.is-loading>.card-info>p {
-  height: 20px;
-}
-
-.card.is-loading>.card-info>.card-buttons>button {
-  height: 20px;
-}
-
-@keyframes shine {
-  to {
-    background-position-x: -200%;
-  }
-}
-
 /*!SCROLLBAR POSTS CONTAINER*/
 /* Scroll 1 */
 .scrollbar::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
-
 .scrollbar::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
-
 .scrollbar::-webkit-scrollbar-thumb {
   background-color: var(--quaternary-color);
   border-radius: 10px;
@@ -337,7 +268,6 @@ body {
   -moz-box-shadow: 0px 0px 23px -8px rgba(255, 255, 255, 1);
   box-shadow: 0px 0px 23px -8px rgba(255, 255, 255, 1);
 }
-
 .modal__content {
   flex: 2;
   position: relative;
@@ -350,37 +280,31 @@ body {
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 }
-
 .modal__title {
   font-size: 2.1rem;
   text-transform: uppercase;
 }
-
 .modal__body {
   font-size: 1.2rem;
 }
-
 .user__container,
 .email__container {
   display: flex;
   padding: 0.3rem 0;
 }
-
-.user__container>i,
-.email__container>i {
+.user__container > i,
+.email__container > i {
   color: var(--primary-blue);
   padding: 0 1rem 0 0;
 }
-
 .modal__button-container {
   display: flex;
   justify-content: center;
 }
-
 /*!MODAL IMG*/
 .modal__img {
   flex: 1.2;
-  background-image: url("../assets/images/modal-info-img.jpg");
+  background-image: url("../assets/modal-info-img.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -393,31 +317,25 @@ body {
   height: 40%;
   overflow-y: auto;
 }
-
 .comment__item {
   padding: 1rem 0;
 }
-
-.comment__item>* {
+.comment__item > * {
   padding: 0.2rem 0;
 }
-
 .comment__name {
   text-transform: uppercase;
 }
-
 .comment__email {
   font-size: 0.8rem;
   opacity: 0.7;
 }
-
 .comment__separator {
   background-color: var(--primary-blue);
   margin-top: 1rem;
   padding: 0.02rem 0 !important;
   border: none;
 }
-
 /*!BUTTONS*/
 .primary__btn {
   cursor: pointer;
