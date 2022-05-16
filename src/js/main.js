@@ -6,6 +6,7 @@ let indexPost = 0; //Last post load
 
 
 window.onload = () => {
+    createSkeleton(4);
     getPosts();
 };
 
@@ -13,6 +14,7 @@ window.onload = () => {
 postContainer.addEventListener('scroll', () => {
     if (postContainer.scrollTop + postContainer.clientHeight >=
         postContainer.scrollHeight) {
+        createSkeleton(4);
         getPosts();
     }
 })
@@ -22,12 +24,69 @@ const getPosts = () => {
     fetch(urlPosts)
         .then((response) => response.json())
         .then((data) => {
-            for (let i = indexPost; i < indexPost + 10; i++) {
+            for (let i = indexPost; i < indexPost + 4; i++) {
                 addPosts(data[i]);
             }
-            indexPost = indexPost + 10;
+            indexPost = indexPost + 4;
         });
 };
+
+//!CREATE SKELETON TEMPLATE
+function createSkeleton(num) {
+
+    const skeleton = [...Array(num).keys()].map(card => {
+        //Article
+        const article = document.createElement("article");
+        article.classList.add("card", "is-loading");
+
+        //Img element
+        const img1 = document.createElement("div");
+        img1.classList.add("card-img");
+
+        //Body container
+        const sectionBody = document.createElement("section");
+        sectionBody.classList.add("card-info");
+
+        //Buttons container
+        const sectionButtons = document.createElement("section");
+        sectionButtons.classList.add("card-buttons");
+
+        //Delete and Edit buttons
+        const deleteButton = document.createElement("button");
+        const editButton = document.createElement("button");
+        deleteButton.classList.add("btn", "buttons_posts");
+        editButton.classList.add("btn", "buttons_posts");
+
+        //add buttons to their section
+        sectionButtons.append(editButton, deleteButton);
+
+        //create title
+        const h2 = document.createElement("h2");
+        h2.classList.add("card-title");
+        //create username
+        const userName = document.createElement("p");
+        userName.classList.add("card-text");
+
+        //add title,username and buttons to body
+        sectionBody.append(h2, userName, sectionButtons);
+        //add all to article
+        article.append(img1, sectionBody);
+
+        //ADD to general container
+        postContainer.appendChild(article);
+    });
+
+    return skeleton;
+
+}
+
+//!REMOVE SKELETON CARDS
+function removeSkeleton() {
+    const skeletonCards = document.querySelectorAll(".is-loading");
+    if (skeletonCards) {
+        Array.from(skeletonCards).map(card => card.remove());
+    }
+}
 
 //!ADD POSTS HTML
 async function addPosts(post) {
@@ -36,6 +95,7 @@ async function addPosts(post) {
     let usernamePost = await getUsername(post.userId);
     let idPost = post.id;
     let imagePost = getImagesSplash(99);
+    removeSkeleton();
     createHTMLpostSection(imagePost, titlePost, usernamePost, idPost);
     createHTMLsliderSection(imagePost, titlePost, idPost);
 
