@@ -1,6 +1,7 @@
 //!GENERAL VARIABLES
 const urlPosts = "http://localhost:3000/posts";
 const postContainer = document.getElementById("blogPosts");
+let modaLaunched = false;
 let controlRepeated = [];
 let indexPost = 0; //Last post load
 
@@ -30,6 +31,9 @@ const getPosts = () => {
             indexPost = indexPost + 4;
         });
 };
+
+createSkeleton(4);
+getPosts();
 
 //!CREATE SKELETON TEMPLATE
 function createSkeleton(num) {
@@ -250,6 +254,7 @@ function randomIndex(num) {
 
 //!GET DATA FOR MODAL SPECIFIC POST
 function getDataModal(e) {
+    const popupParent = document.getElementById("popup");
     if (!(e.target.id === "deleteBtn" || e.target.id === "editBtn")) {
         const clickPostID = this.dataset.id;
         fetchToServerPosts(clickPostID);
@@ -304,7 +309,6 @@ async function addElementModal(post) {
     const userContainer = document.createElement("div");
     userContainer.classList.add("user__container");
     const user = await getUsername(post.userId);
-    console.log(user);
     const username = document.createElement("p");
     username.classList.add("user-info__username");
     username.textContent = user.username;
@@ -438,7 +442,7 @@ async function addElementModalEdit(post) {
     inputBody.id = "bodyInput";
     inputBody.type = "text";
     inputBody.value = post.body;
-    // inputBody.addEventListener('change', updateValue);
+    inputBody.addEventListener('change', updateValue);
 
     labelBody.append(inputBody);
 
@@ -450,7 +454,7 @@ async function addElementModalEdit(post) {
     const inputSave = document.createElement("input");
     inputSave.classList.add("modal-edit__input");
     inputSave.id = "saveBtn";
-    inputSave.type = "submit";
+    inputSave.type = "button";
     inputSave.value = "Save";
     labelSave.append(inputSave);
 
@@ -459,8 +463,15 @@ async function addElementModalEdit(post) {
     //ADD FORM TO CONTAINER
     parentContainer.append(h2, formBody);
 
-    inputSave.addEventListener("click", modifyPost);
+    inputSave.addEventListener("click", (e) => {
+        e.preventDefault();
+        modifyPost(e);
+    });
 
+    formBody.addEventListener("submit", (e) => {
+        e.preventDefault()
+    });
+    
     parentContainer.parentElement.classList.toggle("container--hide");
 }
 
@@ -475,49 +486,59 @@ function updateValue(e) {
     }
 }
 
-//!MODIFY POST BY FETCH REQUEST
+//!MODIFY POST BY FETCH REQUE
 //!GET DATA FOR MODAL SPECIFIC POST
 async function modifyPost(e) {
-    e.preventDefault();
+
+    const popupModal = document.getElementById("popup");
     const clickPostID = e.target.parentElement.parentElement.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
     const response = await fetch(urlPost);
     const post = await response.json();
-    fetchToModifyPosts(urlPost, post);
+    const result = await fetchToModifyPosts(urlPost, post);
+    //show popup info after modify post
+    popup(clickPostID, popupModal, true, result);
 }
 
 async function fetchToModifyPosts(url, post) {
     const titlePost = document.getElementById("titleInput").value;
     const bodyPost = document.getElementById("bodyInput").value;
-    const responsePUT = await fetch(url, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            userId: post.userId,
-            title: titlePost,
-            body: bodyPost,
-            id: post.id
-        })
-    });
-    const result = await responsePUT.text();
-    //!TODOcreate popup to indicate if the user is sure about modifying the post
-    alert(result + 'modified');
-
+    try {
+        const responsePUT = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: post.userId,
+                title: titlePost,
+                body: bodyPost,
+                id: post.id
+            })
+        });
+        return false;
+    } catch (error) {
+        console.log(error);
+        return true;
+    }
 }
 
 //!DELETE POST BY FETCH REQUEST
 async function deletePost(e) {
     const clickPostID = e.target.parentElement.parentElement.parentElement.dataset.id;
     const urlPost = `http://localhost:3000/posts/${clickPostID}`;
-    console.log(urlPost);
-    const responseDELETE = await fetch(urlPost, {
-        method: 'DELETE'
-    });
-    const result = await responseDELETE.text();
+    try {
+        const responseDELETE = await fetch(urlPost, {
+            method: 'DELETE'
+        });
+        // const result = await responseDELETE.text();
+        return false;
+    } catch (error) {
+        console.log(error);
+        return true;
+    }
     //!TODOcreate popup to indicate if the user is sure about deleting the post
-    alert(result + 'posts and comments deleted')
+
 }
 
 //!CAPITALIZE FIRST LETTER
@@ -525,6 +546,66 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//!POPUP MODAL EDIT/DELETE INFO
+function popup(id, container, edit = true, error = false) {
+
+    const modalDialog = document.createElement("div");
+    modalDialog.classList.add("modal-dialog");
+
+    const modalContent = document.createElement("section");
+    modalContent.classList.add("modal-content");
+
+    //Popup header
+    const modalHeader = document.createElement("article");
+    modalHeader.classList.add("modal-header");
+
+    const h5Header = document.createElement("h5");
+    h5Header.classList.add("modal-title");
+    h5Header.textContent = "Info"
+
+    modalHeader.append(h5Header);
+
+    //Popupbody
+    const modalBody = document.createElement("article");
+    modalBody.classList.add("modal-body");
+
+    const pBody = document.createElement("p");
+    //Add content based on response and method
+    if (!error) {
+        if (edit) {
+            pBody.textContent = `Post with the id ${id} has been succesfully modified`;
+        } else {
+            pBody.textContent = `Post with the id ${id} has been succesfully removed`;
+        }
+    } else {
+        pBody.textContent = `An error has occured when updating post`;
+    }
+
+    modalBody.append(pBody);
+    //Popupfooter
+    const modalFooter = document.createElement("modal-footer");
+    modalFooter.classList.add("modal-footer");
+
+    //Popup buttons
+    const buttonClose = document.createElement("button");
+    buttonClose.classList.add("btn", "btn-secondary");
+    buttonClose.setAttribute("data-bs-dismiss", "modal");
+    buttonClose.textContent = "Close";
+    const buttonOk = document.createElement("button");
+    buttonOk.classList.add("btn", "btn-primary");
+    buttonOk.textContent = "OK";
+
+    modalFooter.append(buttonClose, buttonOk);
+    modalContent.append(modalHeader, modalBody, modalFooter);
+    modalDialog.append(modalContent);
+
+    container.append(modalDialog);
+
+    toogleDisplay(container);
+}
+
+
+//!MODAL FUNCTIONALITY
 const parentContainer = document.querySelector(".modal");
 parentContainer.addEventListener("click", (event) =>
     closeModal(parentContainer, event)

@@ -35,7 +35,7 @@ body {
   min-width: 100%;
   min-height: 100%;
   z-index: -1;
-  filter: opacity(60%);
+  filter:opacity(60%);
 }
 
 /*!BLOG GENERAL CONTAINER*/
@@ -53,6 +53,8 @@ body {
   justify-content: space-between;
   flex: 1;
   align-items: center;
+  margin: 0 2rem 0.3rem 2rem;
+  border-bottom: 1px solid var(--secondary-color);
 }
 
 .header__logo {
