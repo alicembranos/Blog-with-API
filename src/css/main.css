@@ -1,26 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Libre+Baskerville:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Libre+Baskerville:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
 
 /*!RESET*/
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Amiri', serif;
+  font-family: "Amiri", serif;
 }
 
 /*!GENERAL STYLES*/
 :root {
   --primary-blue: #85b6ff;
+  --light-color: aliceblue;
   --primary-color: #000000;
   --secondary-color: #064663;
-  --tertiary-color: #FFB72B;
-  --quaternary-color: #F7F7F7;
+  --tertiary-color: #ffb72b;
+  --quaternary-color: #f7f7f7;
   --font-family-lato: "Lato", sans-serif;
 }
 
 body {
-  background-color: var(--primary-color);
+  background-color: #85b6ff8e;
   height: 100vh;
   width: 100%;
   display: flex;
@@ -40,9 +41,11 @@ body {
 
 /*!BLOG GENERAL CONTAINER*/
 .blog {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
   width: 80%;
-  height: 80%;
-  background-color: var(--quaternary-color);
+  height: 90%;
+  background-color: rgba(240, 248, 255, 0.76);
   display: flex;
   flex-direction: column;
 }
@@ -52,22 +55,41 @@ body {
   display: flex;
   justify-content: space-between;
   flex: 1;
-  align-items: center;
+  align-items: flex-end;
+  padding: 0.2rem 1rem;
 }
 
 .header__logo {
   flex: 1;
+}
+.header__logo img {
+  height: 4rem;
 }
 
 .header__menu {
   flex: 2;
 }
 
-.header__menu>ul {
+.header__menu > ul {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  list-style: none;
+  font-size: 1.4rem;
 }
-
+.header__menu > ul > li {
+  padding: 0 3rem;
+}
+.header__menu a {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
+.header__menu a.selected {
+  background-color: #85b6ff;
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+}
 /*!BLOG CONTENT*/
 .blog__content {
   display: flex;
@@ -78,6 +100,8 @@ body {
 
 /*!BLOG-SLIDER*/
 .blog__slider {
+  display: flex;
+  align-items: center;
   flex: 1;
   width: 100%;
   height: 100%;
@@ -106,7 +130,7 @@ body {
   /* opacity: 0.85; */
 }
 
-.carousel-item>h5 {
+.carousel-item > h5 {
   position: absolute;
   bottom: 10%;
   width: 100%;
@@ -134,6 +158,7 @@ body {
   border: none;
   border-radius: 12px;
   box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .card__img {
@@ -213,16 +238,16 @@ body {
 }
 
 .buttons_posts:hover {
-  background-color: var(--tertiary-color);
+  background-color: var(--primary-blue);
   background-size: cover;
   color: var(--quaternary-color);
 }
 
 /*!SKELETON POST CARD*/
-.card.is-loading>.card-img,
-.card.is-loading>.card-info>h2,
-.card.is-loading>.card-info>p,
-.card.is-loading>.card-info>.card-buttons>button {
+.card.is-loading > .card-img,
+.card.is-loading > .card-info > h2,
+.card.is-loading > .card-info > p,
+.card.is-loading > .card-info > .card-buttons > button {
   background: #eee;
   background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
   border-top-right-radius: 12px;
@@ -231,27 +256,26 @@ body {
   animation: 1.5s shine linear infinite;
 }
 
-.card.is-loading>.card-info>h2,
-.card.is-loading>.card-info>p,
-.card.is-loading>.card-info>.card-buttons>button {
+.card.is-loading > .card-info > h2,
+.card.is-loading > .card-info > p,
+.card.is-loading > .card-info > .card-buttons > button {
   border-radius: 0px;
 }
 
-.card.is-loading>.card-img {
+.card.is-loading > .card-img {
   height: 200px;
-
 }
 
-.card.is-loading>.card-info>h2 {
+.card.is-loading > .card-info > h2 {
   margin-top: 1rem;
   height: 80px;
 }
 
-.card.is-loading>.card-info>p {
+.card.is-loading > .card-info > p {
   height: 20px;
 }
 
-.card.is-loading>.card-info>.card-buttons>button {
+.card.is-loading > .card-info > .card-buttons > button {
   height: 20px;
 }
 
@@ -269,12 +293,12 @@ body {
 }
 
 .scrollbar::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(163, 163, 163, 0.877);
   border-radius: 10px;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--quaternary-color);
+  background-color: var(--primary-blue);
   border-radius: 10px;
 }
 
@@ -343,8 +367,8 @@ body {
   padding: 0.3rem 0;
 }
 
-.user__container>i,
-.email__container>i {
+.user__container > i,
+.email__container > i {
   color: var(--primary-blue);
   padding: 0 1rem 0 0;
 }
@@ -375,12 +399,13 @@ body {
   padding: 1rem 0;
 }
 
-.comment__item>* {
+.comment__item > * {
   padding: 0.2rem 0;
 }
 
 .comment__name {
   text-transform: uppercase;
+  font-size: 1.2rem;
 }
 
 .comment__email {
@@ -408,12 +433,79 @@ body {
 
 /*!MODAL EDIT*/
 .modal-edit__content {
-  position: relative;
-  width: 70%;
-  height: 80%;
-  background-color: #000000;
-  color: white;
+  background-color: aliceblue;
+  color: black;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  width: 30vw;
+  height: 70%;
+  border-radius: 0.5rem;
 }
+.modal-edit__img {
+  background-image: url("../assets/images/modal-edit_background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex: 0.8;
+  display: flex;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.modal-edit__illustration {
+  background-image: url("../assets/images/edit1.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex: 1;
+}
+.modal-edit__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
+}
+.modal-edit__form > * {
+  padding: 0.5rem 0;
+}
+.modal-edit__label {
+  display: flex;
+  flex-direction: column;
+}
+textarea {
+  resize: unset;
+  height: 8rem;
+}
+.modal-edit__container-btn {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+}
+.modal-edit__input,
+.modal-edit__textarea {
+  font-size: 1rem;
+}
+.modal-edit__btn {
+  cursor: pointer;
+  background-color: var(--primary-blue);
+  color: white;
+  font-size: 0.9rem;
+  padding: 0.5rem 2rem;
+  border-radius: 0.2rem;
+  border: none;
+  font-size: 1.1rem;
+}
+.modal-edit__btn-close {
+  background-color: #000000 !important;
+}
+.modal-edit__label {
+  font-size: 1.2rem;
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/* @media only screen and (min-width: 600px) {...} */
+/* Medium devices (landscape tablets, 768px and up) */
+/* @media only screen and (min-width: 768px) {...} */
+/* Large devices (laptops/desktops, 992px and up) */
+/* @media only screen and (min-width: 992px) {...} */
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+/* @media only screen and (min-width: 1200px) {...} */
