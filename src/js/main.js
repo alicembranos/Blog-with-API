@@ -6,9 +6,7 @@ let indexPost = 0; //Last post load
 
 
 window.onload = () => {
-    for (let i = 0; i < 10; i++) {
-        createSkeleton();
-    }
+    createSkeleton(4);
     getPosts();
 };
 
@@ -16,7 +14,7 @@ window.onload = () => {
 postContainer.addEventListener('scroll', () => {
     if (postContainer.scrollTop + postContainer.clientHeight >=
         postContainer.scrollHeight) {
-        createSkeleton();
+        createSkeleton(4);
         getPosts();
     }
 })
@@ -26,63 +24,78 @@ const getPosts = () => {
     fetch(urlPosts)
         .then((response) => response.json())
         .then((data) => {
-            for (let i = indexPost; i < indexPost + 10; i++) {
+            for (let i = indexPost; i < indexPost + 4; i++) {
                 addPosts(data[i]);
             }
-            indexPost = indexPost + 10;
+            indexPost = indexPost + 4;
         });
 };
 
 //!CREATE SKELETON TEMPLATE
-function createSkeleton() {
-    //Article
-    const article = document.createElement("article");
-    article.classList.add("card", "is-loading");
+function createSkeleton(num) {
 
-    //Img element
-    const img1 = document.createElement("div");
-    img1.classList.add("card-img");
+    const skeleton = [...Array(num).keys()].map(card => {
+        //Article
+        const article = document.createElement("article");
+        article.classList.add("card", "is-loading");
 
-    //Body container
-    const sectionBody = document.createElement("section");
-    sectionBody.classList.add("card-info");
+        //Img element
+        const img1 = document.createElement("div");
+        img1.classList.add("card-img");
 
-    //Buttons container
-    const sectionButtons = document.createElement("section");
-    sectionButtons.classList.add("card-buttons");
+        //Body container
+        const sectionBody = document.createElement("section");
+        sectionBody.classList.add("card-info");
 
-    //Delete and Edit buttons
-    const deleteButton = document.createElement("button");
-    const editButton = document.createElement("button");
-    deleteButton.classList.add("btn", "buttons_posts");
-    editButton.classList.add("btn", "buttons_posts");
+        //Buttons container
+        const sectionButtons = document.createElement("section");
+        sectionButtons.classList.add("card-buttons");
 
-    //add buttons to their section
-    sectionButtons.append(editButton, deleteButton);
+        //Delete and Edit buttons
+        const deleteButton = document.createElement("button");
+        const editButton = document.createElement("button");
+        deleteButton.classList.add("btn", "buttons_posts");
+        editButton.classList.add("btn", "buttons_posts");
 
-    //create title
-    const h2 = document.createElement("h2");
-    h2.classList.add("card-title");
-    //create username
-    const userName = document.createElement("p");
-    userName.classList.add("card-text");
+        //add buttons to their section
+        sectionButtons.append(editButton, deleteButton);
 
-    //add title,username and buttons to body
-    sectionBody.append(h2, userName, sectionButtons);
-    //add all to article
-    article.append(img1, sectionBody);
+        //create title
+        const h2 = document.createElement("h2");
+        h2.classList.add("card-title");
+        //create username
+        const userName = document.createElement("p");
+        userName.classList.add("card-text");
 
-    //ADD to general container
-    postContainer.appendChild(article);
+        //add title,username and buttons to body
+        sectionBody.append(h2, userName, sectionButtons);
+        //add all to article
+        article.append(img1, sectionBody);
+
+        //ADD to general container
+        postContainer.appendChild(article);
+    });
+
+    return skeleton;
+
+}
+
+//!REMOVE SKELETON CARDS
+function removeSkeleton() {
+    const skeletonCards = document.querySelectorAll(".is-loading");
+    if (skeletonCards) {
+        Array.from(skeletonCards).map(card => card.remove());
+    }
 }
 
 //!ADD POSTS HTML
 async function addPosts(post) {
-    postContainer.textContent = "";
+
     let titlePost = capitalizeFirstLetter(post.title);
     let usernamePost = await getUsername(post.userId);
     let idPost = post.id;
     let imagePost = getImagesSplash(99);
+    removeSkeleton();
     createHTMLpostSection(imagePost, titlePost, usernamePost, idPost);
     createHTMLsliderSection(imagePost, titlePost, idPost);
 
