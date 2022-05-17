@@ -1,0 +1,267 @@
+/*!BLOG GENERAL CONTAINER*/
+.blog {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 80%;
+    height: 90%;
+    background-color: rgba(240, 248, 255, 0.76);
+    display: flex;
+    flex-direction: column;
+}
+
+/*!BLOG HEADER*/
+.blog__header {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    align-items: flex-end;
+    padding: 0.2rem 1rem;
+}
+
+.header__logo {
+    flex: 1;
+}
+
+.header__logo img {
+    height: 4rem;
+}
+
+.header__menu {
+    flex: 2;
+}
+
+.header__menu>ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    font-size: 1.4rem;
+}
+
+.header__menu>ul>li {
+    padding: 0 3rem;
+}
+
+.header__menu a {
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+}
+
+.header__menu a.selected {
+    background-color: #85b6ff;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+}
+
+/*!BLOG CONTENT*/
+.blog__content {
+    display: flex;
+    flex: 11;
+    height: 100%;
+    overflow: hidden;
+}
+
+/*!BLOG-SLIDER*/
+.blog__slider {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-item:hover {
+    cursor: pointer;
+}
+
+.carousel-item {
+    height: 67vh;
+    padding: 1rem 0 0 1rem;
+    border-radius: 12px;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    margin-top: 1rem;
+}
+
+.carousel-item img {
+    height: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+    object-position: center;
+    /* opacity: 0.85; */
+}
+
+.carousel-item>h5 {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    padding: 0rem 2rem 0 3.5rem;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--quaternary-color);
+}
+
+/*!BLOG-POSTS CONTAINER*/
+.blog__posts {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1rem;
+    overflow-y: overlay;
+}
+
+.card {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    margin-right: 25px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.card__img {
+    visibility: hidden;
+    width: 100%;
+    height: 100px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.card__img--hover {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: 0.2s all ease-out;
+}
+
+.card-info {
+    position: absolute;
+    top: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 250px;
+    padding: 16px 24px 24px 24px;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-color: #fff;
+}
+
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    padding-bottom: 0.75rem;
+}
+
+.card:hover .card__img--hover {
+    height: 100%;
+    opacity: 0.3;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    cursor: pointer;
+}
+
+.card:hover .card-info {
+    background-color: transparent;
+}
+
+.card__img--hover:hover .card-buttons {
+    display: none;
+}
+
+.buttons_posts {
+    width: 60px;
+    padding: 0.2rem 0.5rem;
+    border: none;
+    border-color: var(--quaternary-color);
+    background-color: var(--quaternary-color);
+    font-size: 12px;
+    color: var(--primary-color);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.buttons_posts:hover {
+    background-color: var(--primary-blue);
+    background-size: cover;
+    color: var(--quaternary-color);
+}
+
+/*!SKELETON POST CARD*/
+.card.is-loading>.card-img,
+.card.is-loading>.card-info>h2,
+.card.is-loading>.card-info>p,
+.card.is-loading>.card-info>.card-buttons>button {
+    background: #eee;
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+}
+
+.card.is-loading>.card-info>h2,
+.card.is-loading>.card-info>p,
+.card.is-loading>.card-info>.card-buttons>button {
+    border-radius: 0px;
+}
+
+.card.is-loading>.card-img {
+    height: 200px;
+}
+
+.card.is-loading>.card-info>h2 {
+    margin-top: 1rem;
+    height: 80px;
+}
+
+.card.is-loading>.card-info>p {
+    height: 20px;
+}
+
+.card.is-loading>.card-info>.card-buttons>button {
+    height: 20px;
+}
+
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+/*!SCROLLBAR POSTS CONTAINER*/
+/* Scroll 1 */
+.scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background-color: rgba(163, 163, 163, 0.877);
+    border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--primary-blue);
+    border-radius: 10px;
+}

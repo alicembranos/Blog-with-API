@@ -1,60 +1,151 @@
-`#html` `#css` `#js` `#dom` `#JSON` `#HTTP` `#API` `#Bootstrap` `#master-in-software-development`
+`#html` `#css` `#js` `#dom` `#JSON-server` `#JSON`
+<p>&nbsp;</p>
 
-# Blog with API <!-- omit in toc -->
+<img src="./src/assets/images/logo (2).png" alt="Blog chain logo" width="200" height="100" />
 
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
+<p>&nbsp;</p>
+
+# Blog CHAIN 
+
+A fast, simple, elegant & powerful blog powered by HTML, CSS and JS Vanilla.
+
+According to a recent survey, blogs have ranked as the third most trustworthy source of information, following only friends and family. That's right — bloggers are trusted more than celebrities, journalists, brands, and politicians.
+
+With this blog we will get people to fall in love with it. Well, just as your website homepage is like the front door to your business, our blog's design is the front door of ourselves.
+
+With an elegant design, and an organized structure, we have created this fashionable blog to read about any topics you want.
+
+<p>&nbsp;</p>
+
+# Preview 
+
+![image](./src/assets/images/preview.png)
+
+<p>&nbsp;</p>
+
+<h2 align="center">Gold sponsors 🥇❤️</h2>
+
+<p>&nbsp;</p>
+
+
+<p align="center">
+  <a href="https://assemblerinstitute.com/" target="_blank">
+    <img src="./src/assets/images/assembler-logo.png" height="70px">
+  </a>
 </p>
 
-> In this pill you will put into practice the knowledge learned about making HTTP requests to create a blog consuming the information from a third-party API. You will also learn how to use Bootstrap Framework for the layout.
+# Table of contents
 
-## Index <!-- omit in toc -->
+<!-- toc -->
 
-- [Requirements](#requirements)
-- [Repository](#repository)
-- [Technologies used](#technologies-used)
-- [Project delivery](#project-delivery)
-- [Resources](#resources)
-
-## Requirements
-
-- You must use semantic HTML5 elements for all the contents of the application
-- You must use JSON server library to create your own local repository
-- You must use fecth to do the requests
-- You have to use Bootstrap Framework for the Layout and the styles
+- [Getting started](#getting-started)
+- [What can you do in blog chain?](#What-can-you-do-in-blog-chain?)
+- [Roadmap](#Roadmap)
+- [Responsive](#responsive)
+- [Technologies](#Technologies)
+- [Team](#Team)
+- [Links](#links)
+  * [Video](#video)
+  * [Third-party tools](#third-party-tools)
+  * [Linkedin](#Linkedin)
 
 
-## Repository
+<!-- tocstop -->
 
-First of all you must fork this project into your GitHub account.
+# Getting started
 
-To create a fork on GitHub is as easy as clicking the “fork” button on the repository page.
+First of all, you must launch the local API server created with JSON server to be able to fetch the data to the blog web page.
 
-<img src="https://docs.github.com/assets/images/help/repository/fork_button.jpg" alt="Fork on GitHub" width='450'>
+```
+npm run server
+```
 
-## Technologies used
+Also when doing requests, it's good to know that:
 
-\* HTML
+- If you make POST, PUT, PATCH or DELETE requests, changes will be automatically and safely saved to `db.json` using [lowdb](https://github.com/typicode/lowdb).
+- Your request body JSON should be object enclosed, just like the GET output. (for example `{"name": "Foobar"}`)
+- Id values are not mutable. Any `id` value in the body of your PUT or PATCH request will be ignored. Only a value set in a POST request will be respected, but only if not already taken.
+- A POST, PUT or PATCH request should include a `Content-Type: application/json` header to use the JSON in the request body. Otherwise it will return a 2XX status code, but without changes being made to the data. 
 
-\* CSS
+<p>&nbsp;</p>
 
-\* JS
+# What can you do in blog chain?
 
-\* Bootstrap
+<p>&nbsp;</p>
 
-\* HTTP Requests
+- Read articles about whatever topic you want.
+- Modify articles clicking in the edit button of the desired article card.
+- Remove articles clicking in the delete button of the desired article card.
 
-\* JSON
+<p>&nbsp;</p>
 
-\* API
+# Roadmap
 
-## Project delivery
+<p>&nbsp;</p>
 
-To deliver this project you must follow the steps indicated in the document:
+### Project Organization 
 
-- [Submitting a solution](https://www.notion.so/Submitting-a-solution-524dab1a71dd4b96903f26385e24cdb6)
+<p>&nbsp;</p>
 
-## Resources
+We started designing the structure of the blog with its differents html tags and giving it classes and ids.
 
-- [JSON server](https://github.com/typicode/json-server)
-- [Official Bootstrap](https://getbootstrap.com/)
+<img src="./src/assets/images/blog_structure-BLOG-MAIN.drawio.png" alt="Main structure" width="700" height="600" />
+<img src="./src/assets/images/blog_structure-MODAL-INFO.drawio.png" alt="Info modal structure" width="700" height="600" />
+<img src="./src/assets/images/blog_structure-MODAL-INFO.drawio.png" alt="Edit modal structure" width="700" height="600" />
+
+<p>&nbsp;</p>
+
+# Responsive
+
+<p>&nbsp;</p>
+
+This blog web page is adapted for all type of devices.
+
+- Small devices (mobiles 360px and up)
+- Medium devices (landscape tablets, 768px and up) */
+- Large devices (laptops/desktops, 992px and up) */
+- Extra large devices (large laptops and desktops, 1200px and up) */
+
+
+![image](./src/assets/images/responsive-design.jpg)
+
+<p>&nbsp;</p>
+
+# Technologies
+
+- HTML <img src="./src/assets/icons/html5.png" alt="HTML Icon"/>
+- CSS <img src="./src/assets/icons/css-3.png" alt="CSS Icon"/>
+- JAVASCRIPT VANILLA <img src="./src/assets/icons/js.png" alt="JS Icon"/>
+- JSON SERVER
+- BOOTSTRAP 5 <img src="./src/assets/icons/bootstrap.png" alt="BT Icon"/>
+
+<p>&nbsp;</p>
+
+# Team
+
+- 🕺 Ivan Escribano (https://github.com/ivan-escribano)
+- 💃 Alicia Cembranos (https://github.com/alicembranos)
+
+<p>&nbsp;</p>
+
+# Links
+
+## Video
+
+![Video Demo](./src/assets/images/blog.gif)
+
+<p>&nbsp;</p>
+
+## Third-party tools
+
+* [JSON Server](https://github.com/typicode/json-server/blob/master/README.md)
+
+<p>&nbsp;</p>
+
+## Linkedin
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ivan-escribano-382671217/) Ivan Escribano
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/aliciacembranos/) Alicia Cembranos
+
+
