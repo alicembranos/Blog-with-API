@@ -1,8 +1,6 @@
 //!GENERAL VARIABLES
 const urlPosts = "http://localhost:3000/posts";
 const postContainer = document.getElementById("blogPosts");
-let modaLaunched = false;
-let controlRepeated = [];
 let indexPost = 0; //Last post load
 
 window.onload = () => {
@@ -32,9 +30,6 @@ const getPosts = () => {
             indexPost = indexPost + 4;
         });
 };
-
-createSkeleton(4);
-getPosts();
 
 //!CREATE SKELETON TEMPLATE
 function createSkeleton(num) {
@@ -193,46 +188,6 @@ async function getUsername(userId) {
     return user;
 }
 
-//!GET IMAGES
-async function getImages(filter = "") {
-    const urlImages = "https://api.pexels.com/v1/curated?per_page=80";
-    const dataImages = await fetchImages(urlImages);
-    return generateRandomImage(dataImages);
-}
-
-async function fetchImages(url) {
-    // const APIkey = "563492ad6f91700001000001bfb8fa2610e342dcbc6aaf2087ec52d0"; pexels
-    const APIkey = "gKosga8otH1P9B-t1lcm2ZyIiFUPmOE8A0XN7Akra5M";
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            Authorization: APIkey,
-        },
-    });
-    const data = await response.json();
-    return data.photos;
-}
-
-function generateRandomImage(arrayImages) {
-    //Only 80 images in the API
-    //we have 100 post, so that's why we control not to have repeated images until 80 posts
-    let index;
-    let image = "";
-    if (controlRepeated.length < 80) {
-        index = randomIndex(arrayImages);
-        while (controlRepeated[0] == arrayImages[index].id) {
-            index = randomIndex(arrayImages);
-        }
-        controlRepeated.unshift(arrayImages[index].id);
-    } else {
-        index = randomIndex(arrayImages);
-    }
-
-    image = arrayImages[index].src.tiny;
-    return image;
-}
-
 //!GET IMAGE FROM UNSPLASH SOURCE
 function getImagesSplash(index) {
     const randomNumber = randomIndex(index);
@@ -306,7 +261,6 @@ async function addElementModal(post) {
     const userContainer = document.createElement("div");
     userContainer.classList.add("user__container");
     const user = await getUsername(post.userId);
-    console.log(user);
     const username = document.createElement("p");
     username.classList.add("user-info__username");
     username.textContent = user.username;
@@ -447,7 +401,7 @@ async function addElementModalEdit(post) {
     const inputBody = document.createElement("textarea");
     inputBody.classList.add("modal-edit__textarea");
     inputBody.id = "bodyInput";
-    inputBody.type = "text";
+    // inputBody.type = "text";
     inputBody.value = post.body;
     inputBody.addEventListener('change', updateValue);
 
